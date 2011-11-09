@@ -1,10 +1,10 @@
 ---
 layout: post
-title: How I Turned Down $300,000 from Microsoft to go Full-Time on GitHub ksadfjsdalfjsadkf jdf adfj dfjasd fsakjf sadjf sjdf kjas dfkjsdkfsak fksaj dfkjsadfkj
+title: Sample Blog Post
 ---
 
 # {{ page.title }}
 
-{: class="meta"} 18 Oct 2008 - San Francisco
+{: class="meta"} 09 Nov 2011 - Krefeld, Germany
 
-Hello World
+This is the {: class="highlight err"} Sample Blog post.
