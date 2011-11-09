@@ -3,8 +3,8 @@ layout: post
 title: How I Turned Down $300,000 from Microsoft to go Full-Time on GitHub
 ---
 
-h1. {{ page.title }}
+# {{ page.title }}
 
-p(meta). 18 Oct 2008 - San Francisco
+{: class="meta"} 18 Oct 2008 - San Francisco
 
 Hello World
