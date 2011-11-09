@@ -7,4 +7,4 @@ title: Sample Blog Post
 
 {: class="meta"} 09 Nov 2011 - Krefeld, Germany
 
-<p class="highlight"><p class="err">This is the Sample post.</p></p>
+This is the <code>Sample Blog</code> post.
