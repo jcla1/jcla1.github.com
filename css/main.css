@@ -86,28 +86,28 @@ ul.posts {
   line-height: 1.5em;
 }
 
-.title {
+.page-header {
   color: #a00;
   font-weight: bold;
   margin-bottom: 2em;
 }
 
-  .site .title a {
+  .site .page-header a {
     color: #a00;
     text-decoration: none;
   }
 
-  .site .title a:hover {
+  .site .page-header a:hover {
     color: black;
   }
 
-  .site .title a.extra {
+  .site .page-header a.extra {
     color: #aaa;
     text-decoration: none;
     margin-left: 1em;
   }
 
-  .site .title a.extra:hover {
+  .site .page-header a.extra:hover {
     color: black;
   }
 
