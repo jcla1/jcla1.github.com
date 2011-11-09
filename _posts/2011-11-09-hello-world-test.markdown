@@ -1,6 +1,10 @@
 ---
 layout: post
-title: Hello World Blog Post
+title: How I Turned Down $300,000 from Microsoft to go Full-Time on GitHub
 ---
-Hello World Blog Post
-=====================
+
+h1. {{ page.title }}
+
+p(meta). 18 Oct 2008 - San Francisco
+
+Hello World
