@@ -87,9 +87,25 @@ ul.posts {
 }
 
 .page-header {
-  color: #a00;
+/*  color: #a00;
   font-weight: bold;
-  margin-bottom: 2em;
+  margin-bottom: 2em; */
+
+  margin: 0;
+  padding: 0.4em;
+  font-weight: bold;
+  font-size: 2em;
+  letter-spacing: -0.1em;
+  color: #777;
+  text-align: right;
+  background-color: #ccc;
+  position: fixed;
+  top: 0;
+  right: 0;
+  opacity: 0.5;
+  filter: alpha(opacity = 50);
+  z-index: 1;
+  width: 100%;
 }
 
   .site .page-header a {
