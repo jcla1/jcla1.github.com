@@ -95,11 +95,15 @@ ul.posts {
   padding: 0.4em;
   font-weight: bold;
   font-size: 2em;
-  text-align: left;
-  background: rgba(204, 204, 204, 0.5)
+  letter-spacing: -0.1em;
+  text-align: right;
+  background: rgba(0, 0, 0, 0.6);
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
+  opacity: 0.5;
+  filter: alpha(opacity = 50);
+  z-index: 1;
   width: 100%;
 }
 
