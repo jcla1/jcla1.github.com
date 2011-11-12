@@ -86,51 +86,28 @@ ul.posts {
   line-height: 1.5em;
 }
 
-.page-header {
-/*  color: #a00;
+.title {
+  color: #a00;
   font-weight: bold;
-  margin-bottom: 2em; */
-
-  margin: 0;
-  
-
-  padding: 0.4em;
-  
-  
-
-  font-size: 2em;
-  
-
-  letter-spacing: -0.1em;
-  text-align: left;
-  background: rgba(204, 204, 204, 0.6);
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  
-
-  font-style: italic;
-
+  margin-bottom: 2em;
 }
 
-
-  .site .page-header a {
-    color: #BE0000;
+  .site .title a {
+    color: #a00;
     text-decoration: none;
   }
 
-  .site .page-header a:hover {
+  .site .title a:hover {
     color: black;
   }
 
-  .site .page-header a.extra {
+  .site .title a.extra {
     color: #aaa;
     text-decoration: none;
     margin-left: 1em;
   }
 
-  .site .page-header a.extra:hover {
+  .site .title a.extra:hover {
     color: black;
   }
 
@@ -155,7 +132,16 @@ ul.posts {
         color: #8085C1;
       }
 
-#home { padding-top: 3em; }
+    .site .footer .rss {
+      margin-top: 1.1em;
+      margin-right: -.2em;
+      float: right;
+    }
+
+      .site .footer .rss img {
+        border: 0;
+      }
+
 /*****************************************************************************/
 /*
 /* Posts
