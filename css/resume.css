@@ -1,0 +1,21 @@
+#resume table {
+	height: 250px;
+	width: 500px;
+	text-align: center;
+}
+
+#resume #contact_details h1 {
+	font-size: 30px;
+}
+
+#resume #contact_details h3 {
+	font-size: 18px;
+	margin-top: -10px;
+	margin-bottom: 50px;
+}
+
+#resume #contact_details ul {
+	text-align: left;
+	list-style: none;
+	margin-left: 10px;
+}
