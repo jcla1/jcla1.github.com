@@ -115,7 +115,7 @@ ul.posts {
     color: #aaa;
   }
 
-  .site .home {
+  .site #home {
     min-height: 200px;	
   }
 
