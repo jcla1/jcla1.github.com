@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Public/Private key encryption explained
+title: RSA public/private key encryption explained
 ---
 
 # {{ page.title }}
