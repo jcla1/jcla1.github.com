@@ -1,2 +1,2 @@
 safe: true
-permalink: pretty
+permalink: permalink: /blog/:year/:month/:day/:title
