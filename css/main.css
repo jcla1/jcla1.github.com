@@ -115,6 +115,10 @@ ul.posts {
     color: #aaa;
   }
 
+  .site .home {
+    min-height: 200px;	
+  }
+
   .site .footer {
     font-size: 80%;
     color: #666;
