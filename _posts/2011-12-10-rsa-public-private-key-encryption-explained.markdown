@@ -1,7 +1,6 @@
 ---
 layout: post
 title: RSA public/private key encryption explained
-extracss: https://gist.github.com/stylesheets/gist/embed.css
 ---
 
 # {{ page.title }}
@@ -49,7 +48,8 @@ The first part is different in each key, the second is equal in both. So let's s
     equation:<br />
     <code>(e * x - 1) mod (totient(n)) = 0</code>".
     It would take quite long to work it out by hand so I wrote a small Javascript function that does the work for me:
-    <div id="gist-1453094" class="gist">        <div class="gist-file">          <div class="gist-data gist-syntax">              <div class="gist-highlight"><pre><div class='line' id='LC1'><span class="kd">function</span> <span class="nx">doLoop</span><span class="p">(</span><span class="nx">a</span><span class="p">,</span> <span class="nx">b</span><span class="p">)</span> <span class="p">{</span></div><div class='line' id='LC2'>&nbsp;&nbsp;<span class="k">for</span><span class="p">(</span><span class="nx">i</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nb">window</span><span class="p">.</span><span class="kc">Infinity</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">){</span></div><div class='line' id='LC3'>&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">x</span> <span class="o">=</span> <span class="p">(</span><span class="nx">a</span> <span class="o">*</span> <span class="nx">i</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nx">b</span><span class="p">;</span> </div><div class='line' id='LC4'>&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">if</span><span class="p">(</span> <span class="nx">x</span> <span class="o">===</span> <span class="mi">0</span> <span class="p">){</span></div><div class='line' id='LC5'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">i</span><span class="p">)</span></div><div class='line' id='LC6'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span class="k">break</span><span class="p">;</span></div><div class='line' id='LC7'>&nbsp;&nbsp;&nbsp;&nbsp;<span class="p">}</span></div><div class='line' id='LC8'>&nbsp;&nbsp;<span class="p">}</span></div><div class='line' id='LC9'><span class="p">}</span></div></pre></div>          </div>          <div class="gist-meta">            <a href="https://gist.github.com/raw/1453094/751022ebf980377d497ee0f964e6d952eb91f78a/gistfile1.js" style="float:right;">view raw</a>            <a href="https://gist.github.com/1453094#file_gistfile1.js" style="float:right;margin-right:10px;color:#666">gistfile1.js</a>            <a href="https://gist.github.com/1453094">This Gist</a> brought to you by <a href="http://github.com">GitHub</a>.          </div>        </div></div>
+    <script src="https://gist.github.com/1453094.js?file=gistfile1.js">
+    </script>
     The function takes 2 arguments, one is <code>e</code> the other is the <code>totient(n)</code>. Depending on your processor and the size of the numbers you choose
     it can take longer or shorter to run.
     In our case the function will log the value <code>13</code>, which I'll call <code>d</code>. Now you have all the values needed for public-/private-key encryption or decryption.
