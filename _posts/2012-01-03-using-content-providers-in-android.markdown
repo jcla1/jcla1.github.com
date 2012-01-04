@@ -1,7 +1,6 @@
 ---
 layout: post
 title: Using content providers in Android
-published: false
 ---
 
 # {{ page.title }}
@@ -10,6 +9,8 @@ published: false
 
 In this blog post I'll show you how to get data stored on an Android phone using content providers.
 We'll write an app that fetches all the bookmarks and history from the phones browser.
+
+Most Data in Android is exposed through so called "Content Providers". The person who wrote a specific part of Android (i.e. the browser, but surely it wasn't just one person), could decide how to implement the storage. If he used SQLite or just a basic file or json, etc. It didn't matter because Google decided to let their developers implement these content providers so that there would be a standard way for developers like us, to access the data.
 
 In Android all the content providers are stored in the package: <code>android.provider.*;</code>
 They are queried using their URIs and Cursors.
