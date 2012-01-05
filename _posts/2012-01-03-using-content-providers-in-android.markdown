@@ -8,7 +8,7 @@ title: Using content providers in Android
 {: class="meta"} 03 Jan 2012 - Krefeld, Germany
 
 In this blog post I'll show you how to get data stored on an Android phone using content providers.
-We'll write an app that fetches all the bookmarks and history from the phones browser.
+We'll write an app that fetches all the bookmarks and history from the phone's browser.
 
 Most Data in Android is exposed through so called "Content Providers". The person who wrote a specific part of Android (i.e. the browser, but surely it wasn't just one person), could decide how to implement the storage. If he used SQLite or just a basic file or json, etc. It didn't matter because Google decided to let their developers implement these content providers so that there would be a standard way for developers like us, to access the data.
 
@@ -24,13 +24,13 @@ Let's first set up all the variables:
 <script src="https://gist.github.com/1554163.js?file=variables.java">
 </script>
 
-Now that we have the basic variable we can write the cursor. The function that creates it takes a lot of
-variables. As you can see not many of these are important for us:
+Now that we have the basic variables we can write the cursor. The function that creates it takes a lot of
+arguments. As you can see not many of these are important for us:
 
 <script src="https://gist.github.com/1554163.js?file=cursor.java">
 </script>
 
-Next we can make a new onClick listener for the button. This listener basically loops
+Next we'll make a new onClick listener for the button. This listener basically loops
 through all the data rows and does something with them:
 
 <script src="https://gist.github.com/1554163.js?file=onclicklistener.java">
