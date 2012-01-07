@@ -13,7 +13,7 @@ First of all some basic facts:
 
 -	Developed and maintained by Google
 -	Javascript engine behind Google Chrome
--	Also powers Node.Javascript
+-	Also powers Node.js
 -	Really Fast!
 
 V8 is written in C++ so you should have basic understanding of OOP and some C/C++ knowledge wouldn't do bad too.
@@ -73,7 +73,7 @@ directory. Then you execute the file and it should print out "Hello World!" (wit
 
 Congratulations you have just run your first program that uses V8.
 
-In the next part of this series we'll look into sharing variables and objects and dig into the source of Node.Javascript.
+In the next part of this series we'll look into sharing variables and objects and dig into the source of Node.js.
 
 
 
