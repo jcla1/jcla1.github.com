@@ -56,7 +56,7 @@ No that you have all the parts needed for compiling a C++ program that uses the 
 
 Here is a simple C++ program that runs the Javascript: <code>"Hello World!";</code>. Obviously, this is not a very spectacular Javascript program, but it should do to our needs. The comments explain what a each part does:
 
-<script src="https://gist.github.com/1574928.Javascript?file=hello_world.cc">
+<script src="https://gist.github.com/1574928.js?file=hello_world.cc">
 </script>
 
 Save that in a file called hello_world.cc in the <code>~/dev/v8/</code> directory.
