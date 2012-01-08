@@ -52,7 +52,7 @@ Simple isn't it? Now once the build has finished you should be able to see the <
 
 ## Your first V8 program
 
-No that you have all the parts needed for compiling a C++ program that uses the V8 classes, let's get to the interesting part.
+Now that you have all the parts needed for compiling a C++ program that uses the V8 classes, let's get to the interesting part.
 
 Here is a simple C++ program that runs the Javascript: <code>"Hello World!";</code>. Obviously, this is not a very spectacular Javascript program, but it should do to our needs. The comments explain what a each part does:
 
