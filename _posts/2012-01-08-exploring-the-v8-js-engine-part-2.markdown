@@ -191,7 +191,7 @@ You won't notice a difference in node but if you look up the process name of nod
 ## End
 
 That was a short overview of shared variables in the V8 Javascript engine.
-I didn't cover shared functions, because the post was that long already, but if you would like me to write a blog post about them too, just <a href="mailto:whitegolem@gmail.com">email me to whitegolem@gmail.com</a>.
+I didn't cover shared functions, because the post was that long already, but if you would like me to write a blog post about them too, just <a href="mailto:whitegolem@gmail.com">email me at whitegolem@gmail.com</a>.
 
 
 
