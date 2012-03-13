@@ -1,0 +1,117 @@
+---
+title: Web Audio API: An Overview
+---
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+  <title>Web Audio API: An Overview</title>
+  <style>
+    #container {
+      text-align: center;
+      width: 500px;
+      margin: auto;
+    }
+    #fft {
+      background: black;
+    }
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <canvas height="200" width="500" id="fft"></canvas>
+    <audio id="audio" src="IO2010.mp3" preload controls loop></audio>
+    <div id="controls">
+      <p><input id="play" type="button" value="play"><input id="pause" type="button" value="pause" disabled="true"></p>
+      <p>Gain: <input id="gain" type="range" value="1" min="0" max="1" step="0.01"></p>
+      <b>There will be more controlls added to this demo soon!</b>
+    </div>
+  </div>
+  <script>
+  // requestAnim shim layer by Paul Irish
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function(/* function */ callback, /* DOMElement */ element){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+  </script>
+  <script>
+    audioElement = document.getElementById('audio');
+    canvas = document.getElementById('fft');
+    ctx = canvas.getContext('2d');
+
+    gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+
+    gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
+    gradient.addColorStop(0.15, "rgba(255, 255, 0, 1)");
+    gradient.addColorStop(0.3, "rgba(0, 255, 0, 1)");
+    gradient.addColorStop(0.5, "rgba(0, 255, 255, 1)");
+    gradient.addColorStop(0.65, "rgba(0, 0, 255, 1)");
+    gradient.addColorStop(0.8, "rgba(255, 0, 255, 1)");
+    gradient.addColorStop(1, "rgba(255, 0, 0, 1)");
+
+    ctx.fillStyle = gradient;
+
+    audioContext = new webkitAudioContext();
+    analyser = audioContext.createAnalyser();
+
+    CANVAS_HEIGHT = canvas.height;
+    CANVAS_WIDTH = canvas.width;
+    OFFSET = 100;
+    SPACING = 10;
+
+    function draw() {
+      freqData = new Uint8Array(analyser.frequencyBinCount);
+      analyser.getByteFrequencyData(freqData);
+      ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+      for (var i = 0; i < freqData.length - OFFSET; i++) {
+        var magnitude = freqData[i + OFFSET];
+        ctx.fillRect(i * SPACING, CANVAS_HEIGHT, SPACING / 2, -magnitude);
+      };
+      if ( !audioElement.paused ) window.requestAnimFrame(draw, canvas);
+    }
+
+    function init() {
+      source = audioContext.createMediaElementSource(audioElement);
+      ////
+      gain = audioContext.createGainNode();
+      source.connect(gain);
+      gain.connect(analyser);
+      analyser.connect(audioContext.destination);
+      ////
+      
+      draw();
+    }
+
+    window.onload = init;
+    audioElement.addEventListener('play', draw);
+
+    document.getElementById("gain").addEventListener('change',
+      function(e){
+        gain.gain.value = this.value
+      });
+    document.getElementById("play").addEventListener('click',
+      function(e){
+        audioElement.play();
+        this.disabled = true;
+        document.getElementById("pause").disabled = false;
+      });
+    document.getElementById("pause").addEventListener('click',
+      function(e){
+        audioElement.pause();
+        this.disabled = true;
+        document.getElementById("play").disabled = false;
+      });
+  </script>
+
+  {% include analytics.html %}
+</body>
+</html>
