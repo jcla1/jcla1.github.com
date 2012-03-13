@@ -13,7 +13,7 @@ The Web Audio API provides nearly all the functionality of a normal synthesizer,
 Anyway let's get going. I'm going to talk you through the source of a little audio visualizer in this post and the next one. [Here is a demo of the final product.](/demos/web-audio-api/web-audio-overview-part2.html)
 In this first post I'll concentrate on [a simplified version](/demos/web-audio-api/web-audio-overview-part1.html).
 
-__WARNING!__ These demos will only work in up to date versions of Chrome! (currently 17+)
+__WARNING!__ These demos will only work in up to date versions of Chrome! (currently 19+)
 
 Now let's look at the HTML body structure. In this case it is very simple, it has a main <code>#container</code>, that (as the name says) contains a canvas and an audio element. After that there are a couple of script tags. 
 
