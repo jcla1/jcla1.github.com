@@ -7,7 +7,7 @@ title: Web Audio API overview (Part 1 of 2)
 
 {: class="meta"} 11 Mar 2012 - Krefeld, Germany
 
-In the next 2 blog post I'll be showing you some essential features of the Web Audio API. You can find its specification [here](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html).
+In the next 2 blog posts I'll be showing you some essential features of the Web Audio API. You can find its specification [here](https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html).
 The Web Audio API provides nearly all the functionality of a normal synthesizer, one of the reasons why it is so powerful.
 
 Anyway let's get going. I'm going to talk you through the source of a little audio visualizer in the this post and the next one. [Here is a demo of the final product.](/demos/web-audio-api/web-audio-overview-part2.html)
