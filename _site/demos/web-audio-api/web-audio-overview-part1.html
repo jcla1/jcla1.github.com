@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+  <title>Web Audio API: An Overview</title>
+  <style>
+    #container {
+      text-align: center;
+      width: 500px;
+      margin: auto;
+    }
+    #fft {
+      background: black;
+    }
+  </style>
+</head>
+<body>
+  <div id="container">
+    <canvas height="200" width="500" id="fft"></canvas>
+    <audio id="audio" src="IO2010.mp3" preload controls></audio>
+  </div>
+  <script>
+  // requestAnim shim layer by Paul Irish
+    window.requestAnimFrame = (function(){
+      return  window.requestAnimationFrame       || 
+              window.webkitRequestAnimationFrame || 
+              window.mozRequestAnimationFrame    || 
+              window.oRequestAnimationFrame      || 
+              window.msRequestAnimationFrame     || 
+              function(/* function */ callback, /* DOMElement */ element){
+                window.setTimeout(callback, 1000 / 60);
+              };
+    })();
+  </script>
+  <script>
+// The audio element
+audioElement = document.getElementById('audio');
+    
+// The canvas, its context and fillstyle
+canvas = document.getElementById('fft');
+ctx = canvas.getContext('2d');
+ctx.fillStyle = "white";
+
+// Create new Audio Context and an audio analyzer
+audioContext = new webkitAudioContext();
+analyser = audioContext.createAnalyser();
+
+// Canvas' height and width
+CANVAS_HEIGHT = canvas.height;
+CANVAS_WIDTH = canvas.width;
+// We'll need the offset later
+OFFSET = 100;
+// Spacing between the individual bars
+SPACING = 10;
+// Initialize and start drawing
+// when the audio starts playing
+window.onload = init;
+audioElement.addEventListener('play', draw);
+
+function init() {
+  // Take input from audioElement
+  source = audioContext.createMediaElementSource(audioElement);
+  // Connect the stream to an analyzer
+  source.connect(analyser);
+  // Connect the analyzer to the speakers
+  analyser.connect(audioContext.destination);
+  // Start the animation
+  draw();
+}
+
+function draw() {
+  // See http://paulirish.com/2011/requestanimationframe-for-smart-animating/
+  requestAnimFrame(draw, canvas);
+  // New typed array for the raw frequency data
+  freqData = new Uint8Array(analyser.frequencyBinCount);
+  // Put the raw frequency into the newly created array
+  analyser.getByteFrequencyData(freqData);
+  // Clear the canvas
+  ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+  // This loop draws all the bars
+  for (var i = 0; i < freqData.length - OFFSET; i++) {
+    // Work out the hight of the current bar
+    // by getting the current frequency
+    var magnitude = freqData[i + OFFSET];
+    // Draw a bar from the bottom up (cause for the "-magnitude")
+    ctx.fillRect(i * SPACING, CANVAS_HEIGHT, SPACING / 2, -magnitude);
+  };
+}
+  </script>
+
+  <script>
+    var _gaq=[['_setAccount','UA-12395541-8'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+</body>
+</html>

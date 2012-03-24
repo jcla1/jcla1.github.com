@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="lt-ie9 lt-ie8" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="lt-ie9" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en"> <!--<![endif]-->
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta http-equiv="Content-Type" content="text/html">
+  <meta name="google-site-verification" content="xLdL56j0SwgMQ_zaX9jYVsRdm4THscM3NFAYIRhuVdg" />
+  <link href="http://jcla1.com/rss.xml" rel="alternate" title="jcla1.com" type="application/atom+xml" />
+
+	
+  <title>Exploring the V8 JS engine (Part 1 of 2)</title>
+	<meta name="description" content="A blog about tech.">
+  <meta name="author" content="Joseph Adams">
+
+  <link rel="stylesheet" href="/css/main.css" type="text/css" media="screen, projection" />
+	
+</head>
+<body>
+
+<div class="site">
+  <div class="title">
+    <a href="/">Joseph Adams</a>
+    <a class="extra" href="/">home</a>
+    <a class="extra" href="/about/">about</a>
+    <!--a class="extra" href="/about/">about</a-->
+  </div>
+  
+  <div id="post">
+<h1 id='exploring_the_v8_js_engine_part_1_of_2'>Exploring the V8 JS engine (Part 1 of 2)</h1>
+
+<p class='meta'> 07 Jan 2012 - Krefeld, Germany</p>
+
+<p>This is the first part of a 2 part series giving a simple technical overview of the V8 Javascript engine.</p>
+
+<p>First of all some basic facts:</p>
+
+<ul>
+<li>Developed and maintained by Google</li>
+
+<li>Javascript engine behind Google Chrome</li>
+
+<li>Also powers Node.js</li>
+
+<li>Really Fast!</li>
+</ul>
+
+<p>V8 is written in C++ so you should have basic understanding of OOP and some C/C++ knowledge wouldn&#8217;t do bad too. The engine (V8) executes Javascript in so called <code>contexts</code>, these are sandboxed and you can create multiple contexts in one V8 virtual machine (engine). This has the advantage that if you run 2 (or more) Javascript programs you don&#8217;t have to worry about namespacing. The creation of these contexts is not as memory hungry as you may think, so don&#8217;t worry about that. One of the great features of V8 is sharing C++ functions, objects and variables with Javascript, which we will cover in the second part of this series. To use V8 you write a C++ program that uses the V8 libs (to set up the contexts, scopes, templates) and then executes a string which is your Javascript program. You will understand how this works later in this post.</p>
+
+<p>I&#8217;ll take you through setting up the V8 lib and a simple <code>Hello World!</code> program.</p>
+
+<h2 id='downloading_and_building'>Downloading and Building</h2>
+
+<p>I&#8217;m using a Mac to build the library, but <a href='http://code.google.com/p/v8/wiki/BuildingOnWindows'>Windows is supported too</a>. To build V8 you will need:</p>
+
+<ul>
+<li>Subversion 1.4 or higher</li>
+
+<li>Python 2.4 or higher</li>
+
+<li>SCons 1.0.0 or higher</li>
+
+<li>GNU Compiler (GCC) 4.x.x</li>
+</ul>
+
+<p>Downloading the source:</p>
+
+<pre><code>$ mkdir ~/dev/
+$ cd ~/dev/
+$ svn checkout http://v8.googlecode.com/svn/trunk/ v8-read-only
+$ mv v8-read-only v8</code></pre>
+
+<p>Now you have the source you can build the V8 library and header file:</p>
+
+<pre><code>$ scons
+scons: Reading SConscript files ...
+scons: done reading SConscript files.
+scons: Building targets ...
+...</code></pre>
+
+<p>Simple isn&#8217;t it? Now once the build has finished you should be able to see the <code>libv8.a</code> file. This file is important for compiling the C++ program that uses the V8 library.</p>
+
+<h2 id='your_first_v8_program'>Your first V8 program</h2>
+
+<p>Now that you have all the parts needed for compiling a C++ program that uses the V8 classes, let&#8217;s get to the interesting part.</p>
+
+<p>Here is a simple C++ program that runs the Javascript: <code>"Hello World!";</code>. Obviously, this is not a very spectacular Javascript program, but it should do to our needs. The comments explain what a each part does:</p>
+<script src='https://gist.github.com/1574928.js?file=hello_world.cc'>
+</script>
+<p>Save that in a file called hello_world.cc in the <code>~/dev/v8/</code> directory. Next you need to compile the <code>hello_world.cc</code> file by doing:</p>
+
+<pre><code>$ g++ -m32 -Iinclude libv8.a -lpthread hello_world.cc -o hello_world</code></pre>
+
+<p>This compiles the hello world program to a 32-bit executable that includes the <code>libv8.a</code> library. If the compilation was successful you should have a new file called <code>hello_world</code> in your V8 directory. Then you execute the file and it should print out &#8220;Hello World!&#8221; (without the quotes):</p>
+
+<pre><code>$ ./hello_world
+Hello World!</code></pre>
+
+<p>Congratulations you have just run your first program that uses V8.</p>
+
+<p>In the next part of this series we&#8217;ll look into sharing variables and objects and dig into the source of Node.js.</p>
+<div id="related">
+  <h2>Related Posts</h2>
+  <ul class="posts">
+    
+      <li><span>11 Mar 2012</span> &raquo; <a href="/blog/2012/03/11/web-audio-api-overview-part1">Web Audio API overview (Part 1 of 2)</a></li>
+    
+      <li><span>08 Jan 2012</span> &raquo; <a href="/blog/2012/01/08/exploring-the-v8-js-engine-part-2">Exploring the V8 JS engine (Part 2 of 2)</a></li>
+    
+      <li><span>03 Jan 2012</span> &raquo; <a href="/blog/2012/01/03/using-content-providers-in-android">Using content providers in Android</a></li>
+    
+  </ul>
+</div>
+  
+  <div class="footer">
+    <div class="contact">
+      <p>
+        Joseph Adams<br />
+        <a href="mailto:whitegolem@gmail.com">whitegolem@gmail.com</a><br />
+        <a href="http://jcla1.com">jcla1.com</a>
+      </p>
+    </div>
+    <div class="contact">
+      <p>
+        <a href="http://github.com/jcla1/"><img src="/img/github_32.png"></img></a>
+        <a href="http://twitter.com/jcla1/"><img src="/img/twitter_32.png"></img></a>
+        <a href="https://plus.google.com/109982208260057168917/posts"><img src="/img/google_32.png"></a>
+      </p>
+    </div>
+    <div class="rss">
+      <a href="http://jcla1.com/rss.xml">
+        <img src="/img/rss_32.png" alt="Subscribe to RSS Feed" />
+      </a>
+    </div>
+  </div>
+</div>
+
+<script>
+    var _gaq=[['_setAccount','UA-12395541-8'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+
+</body>
+</html>
