@@ -27,7 +27,7 @@ title: Web Audio API: An Overview
     <div id="controls">
       <p><input id="play" type="button" value="play"><input id="pause" type="button" value="pause" disabled="true"></p>
       <p>Gain: <input id="gain" type="range" value="1" min="0" max="1" step="0.01"></p>
-      <b>There will be more controls added to this demo soon!</b>
+      <p>LowPass: <input id="lowpass" type="range" value="5000" min="0" max="5000" step="10"></p>
     </div>
   </div>
   <script>
@@ -61,7 +61,6 @@ title: Web Audio API: An Overview
     ctx.fillStyle = gradient;
 
     audioContext = new webkitAudioContext();
-    analyser = audioContext.createAnalyser();
 
     CANVAS_HEIGHT = canvas.height;
     CANVAS_WIDTH = canvas.width;
@@ -83,8 +82,15 @@ title: Web Audio API: An Overview
       source = audioContext.createMediaElementSource(audioElement);
       ////
       gain = audioContext.createGainNode();
+
+      filter = audioContext.createLowPass2Filter();
+      filter.cutoff.value = 22050;
+
+      analyser = audioContext.createAnalyser();
+
       source.connect(gain);
-      gain.connect(analyser);
+      gain.connect(filter);
+      filter.connect(analyser);
       analyser.connect(audioContext.destination);
       ////
       
@@ -97,6 +103,10 @@ title: Web Audio API: An Overview
     document.getElementById("gain").addEventListener('change',
       function(e){
         gain.gain.value = this.value
+      });
+    document.getElementById("lowpass").addEventListener('change',
+      function(e){
+        filter.cutoff.value = this.value
       });
     document.getElementById("play").addEventListener('click',
       function(e){
