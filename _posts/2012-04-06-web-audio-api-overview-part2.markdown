@@ -53,4 +53,4 @@ Here is the source code:
 <script src="https://gist.github.com/2015620.js?file=filter.html">
 </script>
 
-In this short series I have demonstrated how easy it is to work with the Web Audio API. You now know how to create Audio nodes and change their affect on audio.
+In this short series I have demonstrated how easy it is to work with the Web Audio API. You now know how to create Audio nodes and change their effect on audio.
