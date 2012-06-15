@@ -6,9 +6,74 @@
     <atom:link href="http://jcla1.com/rss.xml" rel="self" type="application/rss+xml" />
     <description>A blog about tech.</description>
     <language>en-us</language>
-    <pubDate>Tue, 13 Mar 2012 20:48:01 +0100</pubDate>
-    <lastBuildDate>Tue, 13 Mar 2012 20:48:01 +0100</lastBuildDate>
+    <pubDate>Fri, 15 Jun 2012 20:44:06 +0200</pubDate>
+    <lastBuildDate>Fri, 15 Jun 2012 20:44:06 +0200</lastBuildDate>
 
+    
+    <item>
+      <title>Getting to work with CodeMirror</title>
+      <link>http://jcla1.com/blog/2012/06/15/getting-to-work-with-codemirror</link>
+      <pubDate>Fri, 15 Jun 2012 00:00:00 +0200</pubDate>
+      <author>Joseph Adams (whitegolem@gmail.com)</author>
+      <guid>http://jcla1.com/blog/2012/06/15/getting-to-work-with-codemirror</guid>
+      <description>&lt;h1 id='getting_to_work_with_codemirror'&gt;Getting to work with CodeMirror&lt;/h1&gt;
+
+&lt;p class='meta'&gt; 15 Jun 2012 - Krefeld, Germany&lt;/p&gt;
+
+&lt;p&gt;Recently on &lt;a href='http://news.ycombinator.com/'&gt;Hackernews&lt;/a&gt; I found an interesting link. It pointed to &lt;a href='http://rubyfiddle.com/'&gt;RubyFiddle&lt;/a&gt;. The site is really nice, but my favourite bit was the editor. By then I had already guessed they hadn&amp;#8217;t done it themselves so I &lt;em&gt;investigated&lt;/em&gt; (looked in the source..) and found they&amp;#8217;re using &lt;a href='http://codemirror.net/'&gt;CodeMirror&lt;/a&gt;. I had heared about CodeMirror before but I never really liked online IDEs. But this editor &lt;strong&gt;really&lt;/strong&gt; caught my eye so I decided to try the most basic setup. Turns out, it&amp;#8217;s really simple! It&amp;#8217;s just 1, in words one, line of Javascript! (Plus basic HTML)&lt;/p&gt;
+&lt;script src='https://gist.github.com/2938024.js?file=oneliner.js'&gt;
+&lt;/script&gt;
+&lt;p&gt;That is all that is needed. Thanks to Marijn Haverbeke for such a great online editor.&lt;/p&gt;
+
+&lt;p&gt;Below is a screenshot of it with the HTML written in it.&lt;/p&gt;
+&lt;img width='640' src='/img/codem.png' /&gt;</description>
+    </item>
+    
+    <item>
+      <title>Web Audio API overview (Part 2 of 2)</title>
+      <link>http://jcla1.com/blog/2012/04/06/web-audio-api-overview-part2</link>
+      <pubDate>Fri, 06 Apr 2012 00:00:00 +0200</pubDate>
+      <author>Joseph Adams (whitegolem@gmail.com)</author>
+      <guid>http://jcla1.com/blog/2012/04/06/web-audio-api-overview-part2</guid>
+      <description>&lt;h1 id='web_audio_api_overview_part_2_of_2'&gt;Web Audio API overview (Part 2 of 2)&lt;/h1&gt;
+
+&lt;p class='meta'&gt; 06 Apr 2012 - Manchester, England&lt;/p&gt;
+
+&lt;p&gt;In the &lt;a href='/blog/2012/03/11/web-audio-api-overview-part1/'&gt;first part&lt;/a&gt;, we looked at the basics of the Web Audio API and using it to visualize music. In this second part I&amp;#8217;ll be showing you how to implement a LowPass Filter and gain control in our example from the first part. We&amp;#8217;ll add some colour to it too.&lt;/p&gt;
+
+&lt;p&gt;Let&amp;#8217;s start with the easiest bit, the color. To change the color of the bars, all you need to do is change &lt;code&gt;ctx.fillStyle = &quot;white&quot;;&lt;/code&gt; to whatever color. If you&amp;#8217;re like me, you won&amp;#8217;t like single color bars. I think those bars deserve a nice rainbow gradient. This is done very easily:&lt;/p&gt;
+&lt;script src='https://gist.github.com/2015620.js?file=gradient.js'&gt;
+&lt;/script&gt;
+&lt;p&gt;And that&amp;#8217;s it now we&amp;#8217;ve a nice gradient.&lt;/p&gt;
+
+&lt;p&gt;Next up, gain. You can create one just like an analyser:&lt;/p&gt;
+&lt;script src='https://gist.github.com/2015620.js?file=gain_create.js'&gt;
+&lt;/script&gt;
+&lt;p&gt;Now we have a &lt;code&gt;GainNode&lt;/code&gt;, but no way for the user to interact with it.&lt;/p&gt;
+
+&lt;p&gt;To give the user some control over the gain, we&amp;#8217;ll have a well-known input. &lt;script src='https://gist.github.com/2015620.js?file=gain.html'&gt;
+&lt;/script&gt;&lt;/p&gt;
+
+&lt;p&gt;The reason it has a max value of 1 is that the &lt;code&gt;GainNode&lt;/code&gt; by default sets this value (It is possible to change this). Of course an input alone doesn&amp;#8217;t do anything. We&amp;#8217;ll add an event listener to it:&lt;/p&gt;
+&lt;script src='https://gist.github.com/2015620.js?file=gain_listener.js'&gt;
+&lt;/script&gt;
+&lt;p&gt;This snippet sets &lt;code&gt;gain.gain.value&lt;/code&gt; to the value on the input. And that is all there is to it.&lt;/p&gt;
+
+&lt;p&gt;Adding a LowPass filter is the same procedure.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Add an input box.&lt;/li&gt;
+
+&lt;li&gt;Create the LowPass filter in Javascript.&lt;/li&gt;
+
+&lt;li&gt;Add a binding between input and LowPass filter&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;Here is the source code:&lt;/p&gt;
+&lt;script src='https://gist.github.com/2015620.js?file=filter.html'&gt;
+&lt;/script&gt;
+&lt;p&gt;In this short series I have demonstrated how easy it is to work with the Web Audio API. You now know how to create Audio nodes and change their effect on audio.&lt;/p&gt;</description>
+    </item>
     
     <item>
       <title>Web Audio API overview (Part 1 of 2)</title>
@@ -268,7 +333,7 @@
 &amp;#39;this_is_a_test&amp;#39;&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;You won&amp;#8217;t notice a difference in node but if you look up the process name of node in Activity Monitor or Task Manager, etc. it will be &amp;#8220;this_is_a_test&amp;#8221; (without quotes):&lt;/p&gt;
-&lt;img alt='img of top with node process' src='/img/exploring-v8-top.jpg' style='width:40em;' /&gt;
+&lt;img style='width:40em;' alt='img of top with node process' src='/img/exploring-v8-top.jpg' /&gt;
 &lt;h2 id='end'&gt;End&lt;/h2&gt;
 
 &lt;p&gt;That was a short overview of shared variables in the V8 Javascript engine. I didn&amp;#8217;t cover shared functions, because the post was that long already, but if you would like me to write a blog post about them too, just &lt;a href='mailto:whitegolem@gmail.com'&gt;email me at whitegolem@gmail.com&lt;/a&gt;.&lt;/p&gt;</description>
