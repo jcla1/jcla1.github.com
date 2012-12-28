@@ -16,9 +16,9 @@ So after a bit of thinking and doing distractive things, I remembered having rea
 
 # The Idea
 The decision was made, what was missing was the data. I wanted to refresh my knowledge about [Ulam spirals](http://en.wikipedia.org/wiki/Ulam_spiral),
-so I loaded up Wikipedia and copied the spirals onto a whiteboard. I gave myself the task of finding,
+so I loaded up Wikipedia and copied the spirals onto a whiteboard. I gave myself the task of finding
 an algorithm that would generate *just* number spirals, given a dimension and <code>[x, y]</code> coordinates to return a value.
-I also gave this task to my father, [@qmacro](http://pipetree.com/qmacro), so we would compete on finding an algorithm.
+I also gave this task to my father [@qmacro](http://pipetree.com/qmacro), so we would compete on finding an algorithm.
 
 The source of both finished algorithms is here:
 
@@ -52,7 +52,7 @@ Here is a sample 4x4 & 5x5 matrix so you can follow along:
 
 * Number spirals are just some matrices that follow a certain pattern.
 * The dimension squared is the highest value of the matrix.
-* The dimension squared is, if odd, in the bottom right, if even, in the top left, corner of the matrix.
+* The location of the dimension squared is dependent on parity: If odd, in the bottom right, if even, in the top left, corner of the matrix.
 * You can work out the numbers on the outer rim of the matrix with simple formulas.
 * If you compare the two matrices, how are they different? The 5x5 matrix has one "frame" more than the 4x4 matrix.
   You could imagine it just being stuck on one of the sides, if you need higher dimensions.
@@ -63,10 +63,10 @@ So from these observations you could draw some conclusions, which I did!
 
 # Conclusions
 
-Based on the previous observations I had the thought that, one could just "drop a frame" if
+Based on the previous observations I had the thought that one could just "drop a frame" if
 the desired number doesn't lie within the area of that frame.
 So I wrote a function that worked out if "dropping a frame" was possible.
-It takes coords, so the location of the number you would like to have, and the dimension of the matrix.
+It takes coords of the location of the number you would like to have, and the dimension of the matrix.
 
 <script src="https://gist.github.com/4397033.js?file=check_if_drop_frame.js">
 </script>
