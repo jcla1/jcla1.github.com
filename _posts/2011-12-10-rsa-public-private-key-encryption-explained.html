@@ -1,0 +1,121 @@
+---
+layout: post
+title: RSA public/private key encryption explained
+date: 2011-12-10
+abstract: A brief overview of how public/private key encryption actually work.
+---
+
+<h1 style="font-size:70px;">{{ page.title }}</h1>
+
+<p>In this blog post I'll show you how to calculate a simple RSA private-/public-key pair.</p>
+
+<p>First of all you need to know that each key (the public-key and the private-key) consists of 2 parts. The first part is different in each key, the second is equal in both. So let's start calculating!</p>
+
+<p class="warning"><b>Warning:</b>  The encryption in this tutorial has a very low security level, because of the low values of <code>p</code> and <code>q</code>! To improve the security level choose higher primes.</p>
+
+<ol>
+    <li>
+      <p>Think of 2 prime numbers.</p>
+
+      <p>In real openssl, these prime numbers are very large and have a similar bit-size. So that we have no problem doing the calculations I'll choose 2 numbers that are quite small:</p>
+      <pre><code>
+p = 3, q = 11
+      </code></pre>
+
+    </li>
+
+    <li>
+      <p>Calculate the modulus for the public/private key.</p>
+
+      <p>This is the number that is the same in both keys, let's call it <code>n</code>. It is used as the modulus in en- and decryption. You calculate it by doing: <pre><code>n = 3*11</code></pre></p>
+    </li>
+
+  <li>
+    <p>Calculate the totient of n.</p>
+
+    <p>Calculating the totient is easy. You could use a table and look up the value, but the calculation is just as easy and faster.
+    Just do:</p>
+    <pre><code>totient(n) = (p - 1) * (q - 1)</code></pre>
+    <p>In our case we do:</p>
+    <pre><code>totient(33) = (3 - 1) * (11 - 1)</code></pre>
+    <p>This equals <code>20</code>.</p>
+
+    So far we have:
+<pre><code>
+p = 3
+q = 11
+n = 33
+totient(n) = 20
+</code></pre>
+
+  <li>
+    <p>Choose a number for <code>e</code></p>
+
+    <p>This number is is a bit harder than the others. It has to be between <code>1</code> and <code>n</code>,
+    also coprime to <code>n</code>.</p>
+    <p>This basically means that the greatest common divisor of both numbers is <code>1</code>.
+    If you choose a prime number for <code>e</code> all you need to do now is check that <code>e</code> isn't a divisor of
+    <code>n</code>. I'll choose the number: <pre><code>e = 17</code></pre></p>
+  </li>
+
+
+  <li>
+    <p>Calculating the modular multiplicative inverse of <code>e * (mod totient(n))</code></p>
+
+    <p>Now at first this sounds a bit overwhelming, I struggled a bit to find out what it means. Expressed in an easy way you could say: <q>What is the solution to the equation:</q></p>
+    <pre><code>(e * x - 1) mod (totient(n)) = 0</code></pre>
+    It would take quite long to work it out by hand so I wrote a small Javascript function that does the work for me:
+
+<pre><code>
+function doLoop(a, b) {
+  for(i=1; i < window.Infinity; i++){
+    x = (a * i -1) % b;
+    if( x === 0 ){
+      console.log(i)
+      break;
+    }
+  }
+}
+</code></pre>
+
+    <p>The function takes 2 arguments, one is <code>e</code> the other is the <code>totient(n)</code>. Depending on your processor and the size of the numbers you choose it can take longer or shorter to run.</p>
+    <p>In our case the function will log the value <code>13</code>, which I'll call <code>d</code>. Now you have all the values needed for public-/private-key encryption and decryption.</p>
+
+  <li>
+    <p>Putting it all together</p>
+
+    <p>All the values up to now:</p>
+<pre><code>
+p = 3
+q = 11
+n = 33
+totient(n) = 20
+e = 17
+d = 13
+</code></pre>
+
+    <p>Your public-key is now: <code>e = 17, n = 33</code></p>
+    <p>Your private-key is now: <code>d = 13, n = 33</code></p>
+
+    <p>With this private and public-key you can now encrypt data by doing this:</p>
+
+    <p>We'll encrypt the value:</p>
+    <pre><code>m = 9</code></pre>
+
+    <p>To encrypt with the public key, you take m to the power of e (in the public-key) mod n</p>
+    <pre><code>m ^ e mod n</code></pre>
+    <pre><code>9 ^ 17 mod 33 = 15</code></pre>
+
+    <p>Our encrypted value is:</p>
+    <pre><code>c = 15</code></pre>
+
+    <p>This can only be decrypted with the private-key.</p>
+    <p>To decrypt it, you take c to the power of d (in the private-key) mod n</p>
+    <pre><code>c ^ d mod n</code></pre>
+    <pre><code>15 ^ 13 mod 33 = 9</code></pre>
+
+    <p>Now we have our original value!</p>
+  </li>
+</ul>
+
+

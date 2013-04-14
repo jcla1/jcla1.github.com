@@ -1,0 +1,89 @@
+---
+layout: post
+title: Using content providers in Android
+date: 2012-01-03
+abstract: Short sample of pulling data in from <a href="http://developer.android.com/guide/topics/providers/content-providers.html">content providers</a>.
+---
+
+<h1>{{ page.title }}</h1>
+
+<p>In this blog post I'll show you how to get data stored on an Android phone using content providers.
+We'll write an app that fetches all the bookmarks and history from the phone's browser.</p>
+
+<p>Most Data in Android is exposed through so called "Content Providers". The person who wrote a specific part of Android (i.e. the browser, but surely it wasn't just one person), could decide how to implement the storage. If he used SQLite or just a basic file or json, etc. It didn't matter because Google decided to let their developers implement these content providers so that there would be a standard way for developers like us, to access the data.</p>
+
+<p>In Android all the content providers are stored in the package: <code>android.provider.*</code></p>
+<p>They are queried using their URIs and Cursors.</p>
+<p>Specifically the Browser's Bookmark and History content provider URI is in: <code>android.provider.Browser.BOOKMARKS_URI</code><br>(The name is a bit misleading, since it is the URI for <i>BOTH</i> Bookmarks and History.)</p>
+<p>To retrieve data you need to find the names of the columns you want to retrieve and put them in an Array.
+You can find the package that contains the column definition for the bookmarks and history <a href="http://developer.android.com/reference/android/provider/Browser.BookmarkColumns.html">here</a>.</p>
+<p>So let's get started!</p>
+Let's first set up all the variables:
+
+<pre><code>
+import android.widget.Button;
+import android.provider.Browser;
+import android.net.Uri;
+
+import java.util.List;
+
+Button getBookmarksButton = (Button)this.findViewById(R.id.getBookmarksButton);
+// I have set up a simple button in my layout, for which we will write a onClick listener.
+
+Uri bookmarks =  Browser.BOOKMARKS_URI;
+// The URI to query for bookmarks and history
+
+List<String> bookmarksList = new ArrayList<String>();
+// Here we'll store the retrieved data.
+
+String[] columns = new String[] {
+    BookmarkColumns.URL
+};
+// Array of all the columns you want to get. If you wanted any more like when it was created,
+// just add another entry in the Array.
+</code></pre>
+
+Now that we have the basic variables we can write the cursor. The function that creates it takes a lot of
+arguments. As you can see not many of these are important for us:
+
+<pre><code>
+import android.database.Cursor;
+
+Cursor managedCursor = managedQuery(
+    bookmarks, // URI of the resource
+    columns,   // Which columns to return
+    null,      // Which rows to return (all rows)
+    null,      // Selection arguments (none)
+    null);     // Order the results (in the order they come)
+</code></pre>
+
+Next we'll make a new onClick listener for the button. This listener basically loops
+through all the data rows and does something with them:
+
+<pre><code>
+import android.view.View.OnClickListener;
+
+getBookmarksButton.setOnClickListener(new OnClickListener() {
+    @Override
+    public void onClick(View v) {
+        if (managedCursor.moveToFirst()) {
+            String url;
+            // Variable for holding the retrieved URL
+            int urlColumn = cur.getColumnIndex(BookmarkColumns.URL);
+            // Reference to the the column containing the URL
+
+            do {
+                url = cur.getString(urlColumn);
+                // Get the field values
+                bookmarksList.add(url);
+                // Do something with the values.
+            } while (managedCursor.moveToNext());
+
+        }
+    }
+});
+</code></pre>
+
+Now you have a list containing the bookmarks and history of a phones browser and you could for example send the urls to a server.
+
+<p>You can download the whole Activity <a href="https://raw.github.com/gist/1554163/7a0b4101462d4e0685289e6c0920b7e5c8d490a7/activity.java">here</a></p>

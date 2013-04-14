@@ -1,0 +1,104 @@
+---
+layout: post
+title: Web Audio API overview (Part 2 of 2)
+date: 2012-04-06
+abstract: Extends the audio visualizer built in <a href="/blog/2012/03/11/web-audio-api-overview-part1/">part one</a>.
+---
+
+<h1 style="font-size:86px;">{{ page.title }}</h1>
+
+<p>In the <a href="/blog/2012/03/11/web-audio-api-overview-part1/">first part</a>, we looked at the basics of the Web Audio API and using it to visualize music.
+In this second part I'll be showing you how to implement a LowPass Filter and gain control in our example from the first part.
+We'll add some colour to it too.</p>
+
+<p>Let's start with the easiest bit, the color.
+To change the color of the bars, all you need to do is change <code>ctx.fillStyle = "white";</code> to whatever color.
+If you're like me, you won't like single color bars. I think those bars deserve a nice rainbow gradient. This is done very easily:</p>
+
+<pre><code>
+gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+
+gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
+gradient.addColorStop(0.15, "rgba(255, 255, 0, 1)");
+gradient.addColorStop(0.3, "rgba(0, 255, 0, 1)");
+gradient.addColorStop(0.5, "rgba(0, 255, 255, 1)");
+gradient.addColorStop(0.65, "rgba(0, 0, 255, 1)");
+gradient.addColorStop(0.8, "rgba(255, 0, 255, 1)");
+gradient.addColorStop(1, "rgba(255, 0, 0, 1)");
+
+ctx.fillStyle = gradient;
+</code></pre>
+
+<p>And that's it now we've a nice gradient.</p>
+
+<p>Next up, gain. You can create one just like an analyser:</p>
+
+<pre><code>
+source = audioContext.createMediaElementSource(audioElement);
+gain = audioContext.createGainNode();
+analyser = audioContext.createAnalyser();
+
+source.connect(gain);
+gain.connect(analyser);
+analyser.connect(audioContext.destination);
+</code></pre>
+
+<p>Now we have a <code>GainNode</code>, but no way for the user to interact with it.</p>
+
+<p>To give the user some control over the gain, we'll have a well-known input.</p>
+
+<pre><code class="html">
+&lt;p&gt;Gain: &lt;input id=&quot;gain&quot; type=&quot;range&quot; value=&quot;1&quot; min=&quot;0&quot; max=&quot;1&quot; step=&quot;0.01&quot;&gt;&lt;/p&gt;
+</code></pre>
+
+<p>The reason it has a max value of 1 is that the <code>GainNode</code> by default sets this value (It is possible to change this).
+Of course an input alone doesn't do anything. We'll add an event listener to it:</p>
+
+<pre><code>
+document.getElementById("gain").addEventListener('change',
+  function(e){
+  gain.gain.value = this.value
+});
+</code></pre>
+
+<p>This snippet sets <code>gain.gain.value</code> to the value on the input.
+And that is all there is to it.</p>
+
+<p>Adding a LowPass filter is the same procedure.</p>
+
+<ol>
+  <li>Add an input box.</li>
+  <li>Create the LowPass filter in Javascript.</li>
+  <li>Add a binding between input and LowPass filter</li>
+</ol>
+
+<p>Here is the source code:</p>
+
+<pre><code class="html">
+&lt;p&gt;LowPass: &lt;input id=&quot;lowpass&quot; type=&quot;range&quot; value=&quot;5000&quot; min=&quot;0&quot; max=&quot;5000&quot; step=&quot;10&quot;&gt;&lt;/p&gt;
+
+&lt;script&gt;
+function init() {
+  source = audioContext.createMediaElementSource(audioElement);
+  gain = audioContext.createGainNode();
+  filter = audioContext.createLowPass2Filter();
+  filter.cutoff.value = 22050;
+  analyser = audioContext.createAnalyser();
+  source.connect(gain);
+  gain.connect(filter);
+  filter.connect(analyser);
+  analyser.connect(audioContext.destination);
+  draw();
+}
+
+
+document.getElementById(&quot;lowpass&quot;).addEventListener('change',
+  function(e){
+    filter.cutoff.value = this.value
+});
+
+
+&lt;/script&gt;
+</code></pre>
+
+<p>In this short series I have demonstrated how easy it is to work with the Web Audio API. You now know how to create Audio nodes and change their effect on audio.</p>

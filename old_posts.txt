@@ -1,0 +1,175 @@
+Guest Blog Post for Quantica Technology
+I was asked by Quantica Technology to write a guest blog post for them. I was very honoured to be asked and really enjoyed putting the post together.
+
+I had been working on an app using the Untappd API to retrieve beer info and display it using jQTouch. There were some interesting issues on retrieving the JSON to write about too.
+
+Here is the blog post on Quantica Tech’s site:
+
+<a title="Retrieving and displaying data from the Untappd API" href="http://quanticatechnology.wordpress.com/2011/03/26/untappd/">Retrieving and displaying data from the Untappd API</a>
+
+I hope you enjoy reading it.                                                                                                                                                                                                                                                                                                                             
+Displaying the distribution of Gmail Messages over labels with Google Apps Script
+My dad <a href="http://twitter.com/qmacro">@qmacro</a> often gives me little tasks to do. I am going to introduce you to this one. It turned out to be quite simple.
+
+The task was to display the distribution of messages over labels in my email with a barchart. I choose to do it in Google Apps Script, because I wanted to try out the new <a title="Gmail Services Extention" href="http://code.google.com/googleapps/appsscript/service_gmail.html">Gmail Services Extention</a> anyway. I divided the task into 3 separate parts (although they end up in 1 function).
+
+The first part was to fetch all the labels that I had on my email account:
+<pre name="code" class="javascript">var labels = GmailApp.getUserLabels();</pre>
+This return a list of all the Gmail labels I have. Next we need to go through each of the labels and fetch all the threads that belong to that label and count them:
+<pre name="code" class="javascript">for (var l in labels) {
+    count = labels[l].getThreads().length;
+}</pre>
+The next step of course is to insert the data into the spreadsheet so we need to handle that as well. I have developed a nice little mechanism to always insert into the next free row and not overwrite any data:
+<pre name="code" class="javascript">var sheet = SpreadsheetApp.getActiveSheet();
+anext = "A".concat(sheet.getLastRow()+1+"");
+bnext = "B".concat(sheet.getLastRow()+1+"");</pre>
+You can extend this to as many columns as you want and still preserve your previous data. We only need 2 columns for our barchart so we can now do the actual insertion:
+<pre name="code" class="javascript">sheet.getRange(anext).setValue(labels[l].getName());
+sheet.getRange(bnext).setValue(count);</pre>
+This inserts the name of the current label and how many threads are marked with it. Finally we just have to run the function and it will insert the data into the spreadsheet (on first runtime Google will ask for permission to access your Gmail account). Then just select the data and press insert chart -&gt; barchart and then you're done.
+
+Here is the complete script with the reference to the <em>sheet</em> in the main function to make it just a tiny bit faster:
+<pre name="code" class="javascript">function insert_label_count() {
+  var sheet = SpreadsheetApp.getActiveSheet();
+  var labels = GmailApp.getUserLabels();
+
+  for (var l in labels) {
+    count = labels[l].getThreads().length;
+
+    anext = "A".concat(sheet.getLastRow()+1+"");
+    bnext = "B".concat(sheet.getLastRow()+1+"");
+
+    sheet.getRange(anext).setValue(labels[l].getName());
+    sheet.getRange(bnext).setValue(count);
+  }
+
+}</pre>
+And here is a screenshot of my result:
+<p style="text-align: center;"><a href="/blog/wp-content/uploads/2011/07/blogpost.png"><img class="aligncenter size-large wp-image-56" title="Label Chart" src="/blog/wp-content/uploads/2011/07/blogpost-1024x509.png" alt="" width="512" height="255" /></a></p>
+
+
+
+
+
+
+Making HTTP Requests in Java
+
+I am currently learning about <a href="http://developer.android.com">Android programing</a> and didn't know any Java what so ever so I thought I'll share some of the things I learnt.
+
+In this post I will show you how simple it is to make HTTP calls in an Android app.
+First we need to define our class that the function is going to live in an of course the function itself.
+<pre name="code" class="java">public class HTTP {
+    private static String sendRequest(String endpoint, String requestParameters){}
+}</pre>
+The function "sendRequest" takes 2 parameters. The first one is the actual URL to get and the second one is a string of all the query parameters: i.e. "param1=abc123&amp;param2=def456". In this case there is no need for a question mark since the function will add this for us.
+
+We will be returning the HTTP response and are going to capture it in a variable called: result.
+<pre name="code" class="java">String result = null;</pre>
+Before we do the HTTP request we will see if the developer has entered a correct URL, in this case correct means "starting with <em>http://</em>".
+We will also have a try/catch statement if there are any exceptions. The code is:
+
+<pre name="code" class="java">
+if (endpoint.startsWith("http://")){
+    try {
+
+        // Do HTTP Request
+
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}</pre>
+
+As the next step we will put "endpoint" in "urlStr" and append the request parameters to the url if there are any given parameters:
+<pre name="code" class="java">
+String urlStr = endpoint;
+if (requestParameters != null && requestParameters.length() > 0){
+    urlStr += "?" + requestParameters;
+}
+</pre>
+
+Out of our "urlStr" we now need to make a URL object that's useable in Java and open the connection:
+<pre name="code" class="java">
+URL url = new URL(urlStr);
+URLConnection conn = url.openConnection ();
+</pre>
+
+Once the connection is established we can start reading the response and go through it line by line and append it to a StringBuffer:
+<pre name="code" class="java">
+BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+StringBuffer sb = new StringBuffer();
+String line;
+while ((line = rd.readLine()) != null){
+    sb.append(line);
+}
+</pre>
+Then we can stop reading in the response and write the contents of the StringBuffer to our "result " variable.
+<pre name="code" class="java">
+rd.close();
+result = sb.toString();
+</pre>
+
+At the end you just have to return the result and that is all there is to it. Here is the full code example with all needed import statements:
+<pre name="code" class="java">
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+
+
+public class HTTP {
+    private static String sendRequest(String endpoint, String requestParameters){
+        String result = null;
+        if (endpoint.startsWith("http://")){
+            try {
+	        String urlStr = endpoint;
+	        if (requestParameters != null && requestParameters.length() > 0){
+	            urlStr += "?" + requestParameters;
+         	}
+	        URL url = new URL(urlStr);
+         	URLConnection conn = url.openConnection ();
+                BufferedReader rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	        StringBuffer sb = new StringBuffer();
+    	        String line;
+  	        while ((line = rd.readLine()) != null){
+	            sb.append(line);
+	        }
+	        rd.close();
+	        result = sb.toString();
+            } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+        }
+		return result;
+    }
+}
+</pre> |
+| The Mac login screen copy in HTML5 and CSS3!                                      | <p><a href="http://jcla1.com/blog/wp-content/uploads/2011/08/Screen-Shot-2011-08-26-at-19.17.48.png"><img src="http://jcla1.com/blog/wp-content/uploads/2011/08/Screen-Shot-2011-08-26-at-19.17.48-1024x640.png" alt="the login screen" title="Mac OSX login screen in HTML5" width="500" class="aligncenter size-large wp-image-143" />Click to enlarge</a></p><p><a href="https://github.com/jcla1/designs/tree/master/mac_login_screen">Download Source</a></p>
+
+In this post I will explain to you how I copied the Mac OSX Lion login screen with HTML5. It started off more as a expedition into the internals of my mac. Then I found a whole lot of image files including the background.
+I thought to myself it will be a good exercise so I decided to take the image and make up a simple copy of the login screen. It turned out to be harder than that. First of all as I was closely examining the login screen I noticed that the center was lighter than the outer bits. Of course this would be fixed easily with a radial gradient,
+<pre name="code" class="css">
+background: -webkit-radial-gradient(
+    center, circle, #ffffff 0%,#000000 100%
+);
+</pre>
+but then I saw that the user profile image wasn't affected so I was forced to use multiple layers over each other to get the wanted effect. I was familiar with this too so I added a few divs and some new CSS properties and there we are. As soon as I had finished that my dad pointed out that the password box was focused but still had a placeholder. This was one of the harder tasks. When I was finished it ended up using jQuery and a label, where the CSS was changed to make the label disappear.
+<pre name="code" class="javascript">
+$(document).ready(function() {
+
+    $('input').keyup(function() {
+        if ($(this).val()) {
+            $('.password_label').hide();
+        } else {
+            $('.password_label').show();
+        }
+    });
+
+    $('input').focus();
+
+});
+
+</pre>
+The disadvantage of this is though you aren't able to click the input box to focus it. Further on another design property of the login screen was that the profile image had a white border around it, not to mention the problems it had displaying the image itself which was notable by the blur the image had. I decided to use a sharp image and border instead though ;)
+An interesting fact I didn't know was the default font on a mac, I tried the design with Helvetica Neue that wasn't quite it thought, it's LucidaGrande in case you wanted to know :)
+I didn't bother with the apple logo, mostly because I couldn't find it.
+You can download the source form github <a href="https://github.com/jcla1/designs/tree/master/mac_login_screen">here</a>. |

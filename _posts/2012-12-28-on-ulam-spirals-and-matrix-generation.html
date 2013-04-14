@@ -1,0 +1,166 @@
+---
+layout: post
+title: On Ulam spirals and matrix generation
+date: 2012-12-28
+abstract: Implementing an algorithm for generating <a href="http://en.wikipedia.org/wiki/Ulam_spiral">Ulam spirals</a> in Javascript.
+---
+
+<h1 style="font-size:86px;">{{ page.title }}</h1>
+
+<p>One of my Christmas presents was the fabulous book: <a href="http://shop.oreilly.com/product/0636920025429.do">Getting Started with D3</a> by Mike Dewar.</p>
+<p>I recommend reading it, if you haven't already! But anyway, after I had read it, I was looking for some data I could visualize. The book suggested the New York transit dataset, but I didn't want to have to clean it just to play with d3. So after a bit of thinking and doing distractive things, I remembered having read about Ulam spirals quite a while back.</p>
+
+<h2>The Idea</h2>
+<p>The decision was made, what was missing was the data. I wanted to refresh my knowledge about <a href="http://en.wikipedia.org/wiki/Ulam_spiral">Ulam spirals</a>,
+so I loaded up Wikipedia and copied the spirals onto a whiteboard.</p>
+<p>I gave myself the task of finding an algorithm that would generate <i>just</i> number spirals, given a dimension and <code>[x, y]</code> coordinates to return a value.
+I also gave this task to my father <a href="http://pipetree.com/qmacro">@qmacro</a>, so we would compete on finding an algorithm.</p>
+
+<p>The source of both finished algorithms is here:</p>
+<ul>
+  <li>Mine: <a href="https://github.com/jcla1/ulam">Github</a></li>
+  <li>My father's: <a href="https://github.com/qmacro/ulam">Github</a></li>
+</ul>
+
+<aside>
+  Turns out, my father's algorithm is faster on smaller matrices and mine on bigger ones.
+</aside>
+<p>and I ran them through JSPerf <a href="http://jsperf.com/ulam-spiral">here</a>.</p>
+
+<h2>Finding an algorithm</h2>
+<p>My approach was, I would say, a bit clumsy. It took quite a while, until I actually got anywhere, but when I finally did something it was an analytical approach.</p>
+<p>My idea was to just stare at the spiral for a long time until something
+magically flew to my mind. And, as opposed to the expectations you may have to the outcome of this, I suddenly had an idea.
+During the staring time I made some interesting observations, as can be seen in the next section.</p>
+
+<h2>Observations</h2>
+<p>Here is a sample 4x4 & 5x5 matrix so you can follow along:</p>
+<pre><code>
+
+                    ___________________   ________________________
+                    |16 | 15 | 14 | 13|   |17 | 16 | 15 | 14 | 13|
+                    |-----------------|   |----------------------|
+                    |5  |  4 |  3 | 12|   |18 |  5 |  4 |  3 | 12|
+                    |-----------------|   |----------------------|
+                    |6  |  1 |  2 | 11|   |19 |  6 |  1 |  2 | 11|
+                    |-----------------|   |----------------------|
+                    |7  |  8 |  9 | 10|   |20 |  7 |  8 |  9 | 10|
+                    -------------------   |----------------------|
+                                          |21 | 22 | 23 | 24 | 25|
+                                          ------------------------
+</code></pre>
+
+<ul>
+  <li>Number spirals are just some matrices that follow a certain pattern.</li>
+  <li>The dimension squared is the highest value of the matrix.</li>
+  <li>The location of the dimension squared is dependent on parity: If odd, in the bottom right, if even, in the top left, corner of the matrix.</li>
+  <li>You can work out the numbers on the outer rim of the matrix with simple formulas.</li>
+  <li>If you compare the two matrices, how are they different? The 5x5 matrix has one "frame" more than the 4x4 matrix.<br> You could imagine it just being stuck on one of the sides, if you need higher dimensions. Again the side on which the last frame was "stuck" is determined by the parity of the dimension.<br> (In this case onto the left-bottom side)</li>
+</ul>
+
+<p>So from these observations you could draw some conclusions, which I did!</p>
+
+<h2>Conclusions</h2>
+
+<p>Based on the previous observations I had the thought that one could just "drop a frame" if the desired number doesn't lie within the area of that frame.</p>
+<p>So I wrote a function that worked out if "dropping a frame" was possible.
+It takes coords of the location of the number you would like to have, and the dimension of the matrix.</p>
+
+<pre><code>
+function check_if_drop_frame(coords, d){
+  if (d % 2 === 0){
+    if (coords[0] != d && coords[1] != 1){
+      return true;
+    } else {
+      return false;
+    }
+  } else if (d % 2 === 1) {
+    if (coords[0] != 1 && coords[1] != d){
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
+</code></pre>
+
+<p>In simple terms, the function checks the parity of the dimension and then checks if the coords <br><code>[x, y]</code> lie within the last frame.</p>
+<p>The idea is just to make the matrix smaller so, the original coords lie on the outermost frames, from which we know from the observations that they are easy values to work out.</p>
+<p>But in order to do so, we can't simply decrement the number of dimensions and leave the coords the same, we have to translate them.</p>
+
+<pre><code>
+function translate(coords, d_old){
+  if (d_old % 2 === 0){
+    coords[1] -= 1;
+  } else if (d_old % 2 === 1) {
+    coords[0] -= 1;
+  }
+
+  return coords;
+}
+</code></pre>
+
+<p>This function again checks the parity and from that is knows which coord it needs to decrement, either <code>x</code> or <code>y</code>. So putting those two thing together we just drop frames/dimension as long as that is possible:</p>
+
+<pre><code>
+while (check_if_drop_frame(coords, d)){
+    coords = translate(coords, d);
+    d -= 1;
+}
+</code></pre>
+
+<p>Once that loop has finished, it is guaranteed that the coords describe a number on one of the outermost frames.</p>
+<p>From there one only needs to find formulas to work out the value. Luckily I have already done that for you, they are a bit messy but they work. Wrapped in a function they look roughly like this:</p>
+
+<pre><code>
+function work_out_value(coords, d){
+  var val = -1;
+
+  var x = coords[0],
+      y = coords[1];
+
+  if (d % 2 === 0){
+    if (coords[1] === 1){
+      val = Math.pow(d, 2) - (coords[0] - 1)
+    } else if (coords[1] === d){
+      val = Math.pow(d, 2) - 2 * (d - 1) - (d - 2) + (x - 1) - 1
+    } else if (coords[0] === 1){
+      val = Math.pow(d, 2) - 3 * (d - 1) - (d - 2) + (y - 2)
+    } else if (coords[0] === d){
+      val = Math.pow(d, 2) - d - (y - 2)
+    }
+  } else if (d % 2 === 1){
+    if (coords[1] === 1){
+      val = Math.pow(d, 2) - 2 * (d - 1) - (x - 1)
+    } else if (coords[1] === d){
+      val = Math.pow(d, 2) - (d - 1) + (x - 1)
+    } else if (coords[0] === 1){
+      val = Math.pow(d, 2) - 2 * (d - 1) + (y - 1)
+    } else if (coords[0] === d){
+      val = Math.pow(d, 2) - 3 * (d - 1) - (y - 1)
+    }
+  }
+  return val;
+}
+</code></pre>
+
+<p>Basically, the function works out which is the outermost frame and then takes the dimension squared, whose position we can foresee, and works backward towards to desired coords.</p>
+
+<p>With a bit of boundary checking you can see the complete source <a href="https://github.com/jcla1/ulam/blob/master/matrix.js">here</a>.</p>
+
+<h2>Hooking it up with d3!</h2>
+
+<p>After I had figured out all of this it was night time, and I wasn't really bothered with good code style at that time of day, but since I wasn't satisfied yet I hooked it up with d3, and made my own ulam spiral.</p>
+
+<script>
+(function(){
+  function translate(a,b){return 0===b%2?a[1]-=1:1===b%2&&(a[0]-=1),a}function check_if_drop_frame(a,b){return 0===b%2?a[0]!=b&&1!=a[1]?!0:!1:1===b%2?1!=a[0]&&a[1]!=b?!0:!1:void 0}function check_values(a,b){return 1>a[0]||1>a[1]||a[0]>b||a[1]>b||1>b?(console.log("Invalid values!"),!1):!0}function work_out_value(a,b){var c=-1,d=a[0],e=a[1];return 0===b%2?1===a[1]?c=Math.pow(b,2)-(a[0]-1):a[1]===b?c=Math.pow(b,2)-2*(b-1)-(b-2)+(d-1)-1:1===a[0]?c=Math.pow(b,2)-3*(b-1)-(b-2)+(e-2):a[0]===b&&(c=Math.pow(b,2)-b-(e-2)):1===b%2&&(1===a[1]?c=Math.pow(b,2)-2*(b-1)-(d-1):a[1]===b?c=Math.pow(b,2)-(b-1)+(d-1):1===a[0]?c=Math.pow(b,2)-2*(b-1)+(e-1):a[0]===b&&(c=Math.pow(b,2)-3*(b-1)-(e-1))),c}function ulam(a,b){if(!check_values(a,b))return-1;for(;check_if_drop_frame(a,b);)a=translate(a,b),b-=1;return work_out_value(a,b)}
+  isPrime=function(a){return isNaN(a)||!isFinite(a)||a%1||2>a?!1:a==leastFactor(a)?!0:!1},leastFactor=function(a){if(isNaN(a)||!isFinite(a))return 0/0;if(0==a)return 0;if(a%1||2>a*a)return 1;if(0==a%2)return 2;if(0==a%3)return 3;if(0==a%5)return 5;for(var b=Math.sqrt(a),c=7;b>=c;c+=30){if(0==a%c)return c;if(0==a%(c+4))return c+4;if(0==a%(c+6))return c+6;if(0==a%(c+10))return c+10;if(0==a%(c+12))return c+12;if(0==a%(c+16))return c+16;if(0==a%(c+22))return c+22;if(0==a%(c+24))return c+24}return a};
+  function draw(){svg=d3.select("body").append("svg").attr("width",width).attr("height",height),g=svg.selectAll("g").data(data).enter().append("g"),g.selectAll("rect").data(function(a){return a}).enter().append("rect").attr("x",function(a){return 2*a[0]*radius+a[0]*spacing}).attr("y",function(a){return 2*a[1]*radius+a[1]*spacing}).attr("width",radius).attr("height",radius).style("fill",function(a){return a[2]})}window.data=[],mousedown=0,dimention=100,radius=4,spacing=-3,height=width=2*dimention*radius+dimention*spacing+2*radius-8,d3.range(dimention).forEach(function(a){data.push([]),d3.range(dimention).forEach(function(b){num=ulam([a+1,b+1],dimention),isPrime(num)?data[a].push([a,b,"#F00"]):data[a].push([a,b,"#EEE"])})});
+  draw();
+})();
+</script>
+
+<p>This demo generates a 2d array and then loops though each element and checks if it is a prime.
+If it is it sets the fill-color to red, else just leaves it gray.
+Then it just gets d3 to draw the matrix.</p>

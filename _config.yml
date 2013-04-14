@@ -1,2 +1,5 @@
 safe: true
 permalink: /blog/:year/:month/:day/:title
+title: Joseph Adams
+author: Joseph Adams
+github_username: jcla1

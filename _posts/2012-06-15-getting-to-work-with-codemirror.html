@@ -1,0 +1,24 @@
+---
+layout: post
+title: Getting to work with CodeMirror
+date: 2012-06-15
+abstract: A short intro to getting a simple CodeMirror demo up and running.
+---
+
+<h1 style="font-size:96px;">{{ page.title }}</h1>
+
+<p>Recently on <a href="http://news.ycombinator.com/">Hackernews</a> I found an interesting link. It pointed to <a href="http://rubyfiddle.com/">RubyFiddle</a>. The site is really nice, but my favourite bit was the editor.</p>
+<p>By then I had already guessed they hadn't done it themselves so I <em>investigated</em> (looked in the source..) and found they're using <a href="http://codemirror.net/">CodeMirror</a>.
+I had heared about CodeMirror before but I never really liked online IDEs. But this editor <strong>really</strong> caught my eye so I decided to try the most basic setup.</p>
+<p>Turns out, it's really simple! It's just 1, in words one, line of Javascript! (Plus basic HTML)</p>
+
+<pre><code>
+CodeMirror(document.getElementById('container'));
+</code></pre>
+
+<p>That is all that is needed. Thanks to Marijn Haverbeke for such a great online editor.</p>
+
+<p>Below is a demo of it:</p>
+
+<iframe src="http://bl.ocks.org/jcla1/raw/2938024" height="500" width="960"></iframe>
+
