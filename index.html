@@ -22,14 +22,18 @@ width: 240px;
 
 <h1>{{ site.title }}</h1>
 
-{% for post in site.posts limit:5 %}
+{% comment %}
+{ for post in site.posts limit:5 }
+{% endcomment %}
+{% for post in site.posts %}
       <!--p><span>{{ post.date | date: '%B %d, %Y' }}</span> &raquo; <a href="{{ post.url }}">{{ post.title }}</a></p-->
       <p class="entity">
         <span class="info"><i>{{ post.date | date: '%B %d, %Y' }}</i></span><a href="{{ post.url }}">{{ post.title }}</a><br>
         {{ post.abstract }}
       </p>
 {% endfor %}
-<p class="entity"><a href="/archive">More</a></p>
+
+<!--p class="entity"><a href="/archive">More</a></p-->
 
 {% include projects.html %}
 {% include about.html %}
