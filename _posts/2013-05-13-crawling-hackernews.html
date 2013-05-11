@@ -1,0 +1,91 @@
+---
+published: false
+layout: post
+title: Crawling HackerNews
+date: 2013-05-13
+abstract: An approach to collecting the complete <a href="https://news.ycombinator.com/">HackerNews</a> database explained.
+---
+
+<h1 style="font-size:96px;">{{ page.title }}</h1>
+
+<p>It's been a while now since I started developing <a href="https://github.com/jcla1/HN2JSON">HN2JSON</a> and I am actually still quite happy with that achievement.
+If you've not heard of <a href="https://github.com/jcla1/HN2JSON">HN2JSON</a> yet, it's basically a simple Ruby interface to <a href="https://news.ycombinator.com/">HackerNews</a>.</p>
+
+<p>But my dream was always to collect a complete copy of the HackerNews database! This wasn't possible with <a href="https://github.com/jcla1/HN2JSON">HN2JSON</a>, because it is too slow and I didn't want to hammer HN with <b>millions</b> of requests. What I was left with was the <a href="https://www.hnsearch.com/api">HNSearch API</a></p>
+
+<p>This was going to be a hard battle to win. And it was I can tell you. I won't trouble you with the details, but I had coded and thought for a whole week until I finally figured it out.</p>
+
+<h2>The battle begins</h2>
+<p>To understand why I thought this was such a hard problem to solve, you must know about the most complained about "feature" of the HN API. It restricts your search and you can't retrieve HN posts by their natural id.
+Instead the db holding the data assigns a <em>signed_id</em> to every db entry. You can get a post by signed_id, but they are near-impossible to guess.</p>
+<p>So confronted with this problem I had thought about writing a distributed system (that would guess entries based on pre-crawled data) and also just brute-force guessing all possible signed_ids.
+Looking back, these approaches are ludicrous compared to the simple solution that I found in the end.</p>
+
+<p>For you to understand this simple solution, you must know that, when calling the API URL you can pass in filters based on various available parameters. Let me show you an example:</p>
+
+<pre><code>http://api.thriftdb.com/api.hnsearch.com/items/_search? \
+  filter[fields][username]=pg</code></pre>
+
+<p>This URL will give you access to 10 posts and comments on HN where the submitter's username is "pg".
+Of course 10 entries isn't very helpful, apart from the fact that you can up that limit to 100, but what I realized was that there is also a filter on the submittion date. This filter takes a date range:</p>
+
+<pre><code>http://api.thriftdb.com/api.hnsearch.com/items/_search? \
+  filter[fields][create_ts]=[2013-01-01T00:00:00Z + TO + *]</code></pre>
+
+<p>This URL will return you 10 posts and comments from start of 2013 upto anytime.
+Might not look helpful at first, but when we combine this with a sorting filter we are able to collect all items in the database.</p>
+
+<p>Now let me explain that last bit again.</p>
+
+<p>Let's say, we sort all entries there are by date in ascending order. When we call the corresponding URL, we are presented with the first 10(0) entries ever on HN.
+And now let's say that we take the last entry we get from the API and set a date-range filter going from that last entry to anytime. Now we get the next 10(0) entries from HN.
+If you keep updating the URL, you are able to collect the complete HN database. An example URL for that would be something like:</p>
+
+<pre><code>http://api.thriftdb.com/api.hnsearch.com/items/_search? \
+  sortby=create_ts
+  &limit=100
+  &filter[fields][create_ts]=[&lt;PUT LAST ENTRY'S DATE HERE&gt; + TO + *]</code></pre>
+
+<h2>Conclusion</h2>
+
+<p>So there you are, simple after all. Coding this mechanism up and making it fault-tolerant didn't even take me 2 hours. I plan to collect the whole db in the very near future and then to open-source it so that you and everyone else can benefit from it.</p>
+
+
+<!--p>
+  It's been a while now since I've had the vision of accumulating a <em>near</em> complete copy of the public <a href="http://news.ycombinator.com/">HackerNews</a> database.
+  Though it was only recently that I tackled this task successfully. I have tried to scratch this itch before, mainly by writing <a href="https://github.com/jcla1/HN2JSON/">HN2JSON</a>, but it failed to collect enough data, due to the fact that I didn't want the hammer the site.
+</p>
+<p>So I had to find a different approach, of which I first thought it were going to be impossible.</p>
+<p>
+  After a few weeks of not so focused thinking, I had an idea inspired by the way Web-Crawlers work!
+  I'd seed the DB with some story (it later became the <a href="http://news.ycombinator.com/item?id=1">first story ever posted on HN</a>) and from there work downwards.
+</p>
+<p>I'll explain this last thought a bit more:</p>
+
+<ul>
+  <li>Get a random (uncrawled) story from the DB</li>
+  <li>Get it's information from the HNSearch API and store it</li>
+  <li>Extract all information that leads to more information and put that onto a queue for crawling</li>
+</ul>
+
+<p>Which meant that when I, for example, get the first story on HN, I can extract this inforamtion that leads to more information:</p>
+<ul>
+  <li>Username, in this case: <a href="http://news.ycombinator.com/user?id=pg">pg</a></li>
+  <li>All the comments submitted by this user</li>
+  <li>All posts/polls/stories posted by this user</li>
+</ul>
+
+<p>
+  So on I went, to design a system that would, turn-by-turn, get all this information.
+  All together it took me about 2 days thinking loosely about the program structure, how the threads comunicated, etc.
+</p>
+
+<p>After that I directly started coding and it went quite well. Until I came to a point where I had a problem.</p>
+<aside>The restriction is: the sum of query-parameters <b>limit</b> and <b>start</b> must be <= 1000</aside>
+<p>
+  That problem was the limits of the HNSearch API. It restricted you to 100 results at a time and at most 1000 back.
+  So I was thinking how to handle a user with more than 1000 comments.
+</p>
+<p>This would be a great problem.</p>
+
+<h2>A new idea</h2-->
