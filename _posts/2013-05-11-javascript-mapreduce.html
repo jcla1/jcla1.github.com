@@ -1,0 +1,331 @@
+---
+layout: post
+title: Javascript and MapReduce
+date: 2013-05-11
+abstract: A quick programming exercise, featuring the <code>MapReduce</code> functionality of Javascript.
+---
+
+<h1>{{ page.title }}</h1>
+
+<p>Don't we all love feeling like <b>big data scientists</b>, <b>data miners</b> or <em>&lt;insert data buzzword here&gt;</em>?<br>Well here's a way to get that feeling in your everyday life:</p>
+
+<p>Recently I discovered the <code>map</code>, <code>reduce</code>, <code>filter</code> functions in Javascript. They are absolutely <b>awesome</b>!
+   To demonstrate their abilities we'll be building a wordcount program, using MapReduce, in Javascript, all chained.
+
+<h2>Digging Data</h2>
+
+<p>As a datasource we'll use <a href="https://news.ycombinator.com/bigrss">HackerNews' big RSS feed</a> and since we can treat RSS as plain HTML, it's very simple to get started:</p>
+
+<pre><code>
+var titles = document.getElementsByTagName('title');
+</code></pre>
+
+<p>This is simply getting all the titles from the RSS feed. But we have a problem, <code>getElementsByTagName</code> returns a <code>NodeList</code> and not an <code>Array</code>, which hasn't got the cool MapReduce functionallity we want.</p>
+<p>So we have to convert it to an array, and whilst doing so, we can also grab all the titles as strings, instead of HTML Nodes</p>
+
+<pre><code><span class="grayout">
+var titles = Array.prototype.slice.call(document.getElementsByTagName('title'))</span>
+  .map(function(node) {
+    return node.innerText;
+  });
+</code></pre>
+
+
+<p>Simple isn't it? And now we have a list of all the titles on HackerNews (HN).</p>
+
+<h2>Introducing .map(callback [, thisArg])</h2>
+
+<p><code>map</code> is a nice small function that takes 2 parameters, but usually only the first one is specified.</p>
+<p>
+  As you can tell from the above code, the first argument is a callback function that is to be called over every element in the array, the second one is just to specify a value for <code>this</code> during the function execution.
+  More important are the parameters passed to the callback function. They are: the array element itself, its index and the whole array/context.
+  So the callback function's signature would look something like this:
+</p>
+
+<pre><code>
+var callback = function(element, index, context) { /* omitted */ }
+</code></pre>
+
+<h2>Unwanted punctuation & Individual words</h2>
+
+<p>
+  As you may have noticed, the HN titles don't just contain letters, but they also carry numbers and punctuation.
+  These are unwanted in our final wordcount, so we remove them. This can be done in the same <code>map</code> call. Isn't Javascript a great language:
+</p>
+
+<pre><code><span class="grayout">
+var words = Array.prototype.slice.call(document.getElementsByTagName('title'))</span>
+  .map(function(node) {
+    return node.innerText.toLowerCase().match(/([a-z]+)/g);
+  });
+</code></pre>
+
+<p>If you're coding along, you'll have noticed this had a side-effect: It automatically gave us all the individual words, thanks to the RegEx, which returns all matches in an array.</p>
+<p>
+  Even with this helpful side-effect, we are presented with a further problem. The <code>words</code> array is <a href="http://en.wikipedia.org/wiki/Array_data_structure#Multidimensional_arrays">2d</a>, which means we need to flatten it.
+  Good job we've got <code>reduce</code>:
+</p>
+
+<pre><code><span class="grayout">
+var words = Array.prototype.slice.call(document.getElementsByTagName('title'))
+  .map(function(node) {
+    return node.innerText.toLowerCase().match(/([a-z]+)/g);
+  })</span>
+  .reduce(function(last, now) {
+    now.forEach(function(word) {
+      last.push(word);
+    });
+
+    return last;
+  }, []);
+</code></pre>
+
+<h2>Introducing .reduce(callback [, initialValue])</h2>
+
+<p>
+  As <code>map</code>, <code>reduce</code> takes 2 arguments.
+  The first one is a callback function again, which is to be called on every element in the array.
+  The <code>initialValue</code> parameter will be easier to understand once you see the callback's signature:
+</p>
+
+<pre><code>
+var callback = function(previousValue, currentValue, index, context) { /* omitted */ }
+</code></pre>
+
+<aside>Note: We wouldn't actually end up with a ginormous string, because strings don't have a <code>push</code> method. It would just error out.</aside>
+<p>
+  As you can see, the first parameter passed to the callback is the previous value.
+  If you wanted to sum up an array of numbers, this would be not problem.
+  But in our case we want an array returned, so we specify an inital value for the <code>previousValue</code>.
+  If we didn't do this we would end up with a ginormous string.
+</p>
+
+<h2>Counting words</h2>
+
+<p>For this task, we can again use reduce, but before we start let me show you what the result will look like:</p>
+
+<pre><code>
+[['the', 'on', 'news', 'hacker', ...], [50, 66, 20, 19, ...]]
+</code></pre>
+
+<p>
+  It'll be a <a href="http://en.wikipedia.org/wiki/Array_data_structure#Multidimensional_arrays">2d array</a> again.
+  The index of a word will correspond to the number of its occurrences.
+  As an example the word <em>news</em> has the index <em>2</em>, in the first array, so its score is at index <em>2</em> in the second array, in this case <em>20</em>.
+</p>
+
+<p>
+  To code this, we'll use <code>reduce</code> again and as an inital value we'll specify: <code>[[], []]</code>
+</p>
+
+<pre><code><span class="grayout">
+var scores = Array.prototype.slice.call(document.getElementsByTagName('title'))
+  .map(function(node) {
+    return node.innerText.toLowerCase().match(/([a-z]+)/g);
+  })
+  .reduce(function(last, now) {
+    now.forEach(function(word) {
+      last.push(word);
+    });
+
+    return last;
+  }, [])</span>
+  .reduce(function(last, now) {
+    var index = last[0].indexOf(now);
+
+    if (index === -1) {
+      last[0].push(now);
+      last[1].push(1);
+    } else {
+      last[1][index] += 1;
+    }
+
+    return last;
+  }, [[], []]);
+</code></pre>
+
+<h2>Zipping up the arrays</h2>
+
+<p>
+  We're nearly done with collecting the data.
+  All we need to do now is to combine the 2 arrays into one.
+  The format this final array will be in is as follows:
+</p>
+
+<pre><code>
+[['the', 50], ['on', 66], ['news', 20], ['hacker', 19], ...]
+</code></pre>
+
+<p>For this we'll use <code>reduce</code> again and utilize the 4th parameter passed to the callback:</p>
+
+<pre><code><span class="grayout">
+var scores = Array.prototype.slice.call(document.getElementsByTagName('title'))
+  .map(function(node) {
+    return node.innerText.toLowerCase().match(/([a-z]+)/g);
+  })
+  .reduce(function(last, now) {
+    now.forEach(function(word) {
+      last.push(word);
+    });
+
+    return last;
+  }, [])
+  .reduce(function(last, now) {
+    var index = last[0].indexOf(now);
+
+    if (index === -1) {
+      last[0].push(now);
+      last[1].push(1);
+    } else {
+      last[1][index] += 1;
+    }
+
+    return last;
+  }, [[], []])</span>
+  .reduce(function(last, now, index, context) {
+    var zip = [];
+    last.forEach(function(word, i) {
+      zip.push([word, context[1][i]])
+    });
+    return zip;
+  });
+</code></pre>
+
+<p>This works, because the callback is only called once, so we can zip up the words with their scores.</p>
+<p>Now we have all our data collected. We could stop here, but humans love visualisations!</p>
+
+<h2>Visualisation</h2>
+
+<p>We're going to use <a href="http://d3js.org/">D3.js</a> to visualize our data. And to be specific we'll create a force-directed chart.</p>
+<p>I won't explain how the visualisation works, because that isn't the subject of this post, but to find out you can always view source!</p>
+<aside><br>Hover over the circles to see the exact number of occurrences and the word itself. Each color represents a different length of word.</aside>
+
+
+
+<script>
+(function(){
+var margin = {top: 20, right: 20, bottom: 30, left: 40},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+var padding = 6,
+    radius = d3.scale.log().range([8, 30]).domain([2, 82]),
+    color = d3.scale.category10().domain([0, 15]);
+
+var nodes = [];
+var circle = [];
+var force;
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .attr("class", "vis")
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.html('/data/hn_bigrss.html', function(err, html) {
+  // This is our code executing on the recieved html
+  scores=Array.prototype.slice.call(html.lastChild.getElementsByTagName("title")).map(function(a){return a.innerText.toLowerCase().match(/([a-z]+)/g)}).reduce(function(a,c){c.forEach(function(b){a.push(b)});return a},[]).reduce(function(a,c){var b=a[0].indexOf(c);-1===b?(a[0].push(c),a[1].push(1)):a[1][b]+=1;return a},[[],[]]).reduce(function(a,c,b,e){var d=[];a.forEach(function(a,b){d.push([a,e[1][b]])});return d});
+
+  scores_filtered = scores.filter(function(score){return score[1] > 1})
+  scores_filtered = scores_filtered.filter(function(score){return score[0].length > 1})
+
+  scores_filtered.forEach(function(score) {
+    nodes.push({radius: radius(score[1]), color: color(score[0].length), word: score[0], score: score[1]});
+  });
+
+  force = d3.layout.force()
+    .nodes(nodes)
+    .size([width, height])
+    .gravity(0.01)
+    .charge(-0.01)
+    .on("tick", tick)
+    .start();
+
+  circle = svg.selectAll("circle")
+    .data(nodes)
+  .enter().append("circle")
+    .attr("r", function(d) { return d.radius; })
+    .style("fill", function(d) { return d.color; })
+    .call(force.drag);
+
+  circle.append("title")
+    .text(function(d) { return "(" + d.score + ") " + d.word; });
+
+});
+
+function tick(e) {
+  circle
+      .each(cluster(10 * e.alpha * e.alpha))
+      .each(collide(.5))
+      .attr("cx", function(d) { return d.x; })
+      .attr("cy", function(d) { return d.y; });
+}
+
+// Move d to be adjacent to the cluster node.
+function cluster(alpha) {
+  var max = {};
+
+  // Find the largest node for each cluster.
+  nodes.forEach(function(d) {
+    if (!(d.color in max) || (d.radius > max[d.color].radius)) {
+      max[d.color] = d;
+    }
+  });
+
+  return function(d) {
+    var node = max[d.color],
+        l,
+        r,
+        x,
+        y,
+        i = -1;
+
+    if (node == d) return;
+
+    x = d.x - node.x;
+    y = d.y - node.y;
+    l = Math.sqrt(x * x + y * y);
+    r = d.radius + node.radius;
+    if (l != r) {
+      l = (l - r) / l * alpha;
+      d.x -= x *= l;
+      d.y -= y *= l;
+      node.x += x;
+      node.y += y;
+    }
+  };
+}
+
+// Resolves collisions between d and all other circles.
+function collide(alpha) {
+  var quadtree = d3.geom.quadtree(nodes);
+  return function(d) {
+    var r = d.radius + radius.domain()[1] + padding,
+        nx1 = d.x - r,
+        nx2 = d.x + r,
+        ny1 = d.y - r,
+        ny2 = d.y + r;
+    quadtree.visit(function(quad, x1, y1, x2, y2) {
+      if (quad.point && (quad.point !== d)) {
+        var x = d.x - quad.point.x,
+            y = d.y - quad.point.y,
+            l = Math.sqrt(x * x + y * y),
+            r = d.radius + quad.point.radius + (d.color !== quad.point.color) * padding;
+        if (l < r) {
+          l = (l - r) / l * alpha;
+          d.x -= x *= l;
+          d.y -= y *= l;
+          quad.point.x += x;
+          quad.point.y += y;
+        }
+      }
+      return x1 > nx2
+          || x2 < nx1
+          || y1 > ny2
+          || y2 < ny1;
+    });
+  };
+}
+})();
+</script>
