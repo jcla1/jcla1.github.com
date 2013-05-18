@@ -26,7 +26,7 @@ Looking back, these approaches are ludicrous compared to the simple solution tha
   filter[fields][username]=pg</code></pre>
 
 <p>This URL will give you access to 10 posts and comments on HN where the submitter's username is "pg".
-Of course 10 entries isn't very helpful, apart from the fact that you can up that limit to 100, but what I realized was that there is also a filter on the submittion date. This filter takes a date range:</p>
+Of course 10 entries isn't very helpful, apart from the fact that you can up that limit to 100, but what I realized was that there is also a filter on the submission date. This filter takes a date range:</p>
 
 <pre><code>http://api.thriftdb.com/api.hnsearch.com/items/_search? \
   filter[fields][create_ts]=[2013-01-01T00:00:00Z + TO + *]</code></pre>
