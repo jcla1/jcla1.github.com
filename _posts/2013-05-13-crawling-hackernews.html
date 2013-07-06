@@ -41,7 +41,7 @@ And now let's say that we take the last entry we get from the API and set a date
 If you keep updating the URL, you are able to collect the complete HN database. An example URL for that would be something like:</p>
 
 <pre><code>http://api.thriftdb.com/api.hnsearch.com/items/_search? \
-  sortby=create_ts
+  sortby=create_ts asc
   &limit=100
   &filter[fields][create_ts]=[&lt;PUT LAST ENTRY'S DATE HERE&gt; + TO + *]</code></pre>
 
