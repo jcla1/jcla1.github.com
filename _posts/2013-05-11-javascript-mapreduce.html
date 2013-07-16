@@ -72,11 +72,7 @@ var words = Array.prototype.slice.call(document.getElementsByTagName('title'))
     return node.innerText.toLowerCase().match(/([a-z]+)/g);
   })</span>
   .reduce(function(last, now) {
-    now.forEach(function(word) {
-      last.push(word);
-    });
-
-    return last;
+    return last.concat(now);
   }, []);
 </code></pre>
 
