@@ -70,6 +70,16 @@ pre {
   margin: 2em 0 2em -20px;
 }
 
+h1.age_big {
+  font-size: 224pt;
+  text-align: center;
+}
+
+span.amp {
+    font-family: Baskerville, 'Goudy Old Style', Palatino, 'Book Antiqua', "Yanone Kaffeesatz", serif;
+    font-style: italic;
+    font-weight: normal;
+}
 
 /* CODE */
 .html .value,
