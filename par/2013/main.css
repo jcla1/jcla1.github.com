@@ -1,10 +1,10 @@
 @font-face {
     font-family: 'HelveticaNeueCondensedBold';
-    src: url('hncb/helveticaneue-condensedbold.eot');
-    src: url('hncb/helveticaneue-condensedbold.eot') format('embedded-opentype'),
-         url('hncb/helveticaneue-condensedbold.woff') format('woff'),
-         url('hncb/helveticaneue-condensedbold.ttf') format('truetype'),
-         url('hncb/helveticaneue-condensedbold.svg#HelveticaNeueCondensedBold') format('svg');
+    src: url('hncb_font/helveticaneue-condensedbold.eot');
+    src: url('hncb_font/helveticaneue-condensedbold.eot') format('embedded-opentype'),
+         url('hncb_font/helveticaneue-condensedbold.woff') format('woff'),
+         url('hncb_font/helveticaneue-condensedbold.ttf') format('truetype'),
+         url('hncb_font/helveticaneue-condensedbold.svg#HelveticaNeueCondensedBold') format('svg');
 }
 
 body {
