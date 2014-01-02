@@ -1,5 +1,14 @@
+@font-face {
+    font-family: 'HelveticaNeueCondensedBold';
+    src: url('hncb/helveticaneue-condensedbold.eot');
+    src: url('hncb/helveticaneue-condensedbold.eot') format('embedded-opentype'),
+         url('hncb/helveticaneue-condensedbold.woff') format('woff'),
+         url('hncb/helveticaneue-condensedbold.ttf') format('truetype'),
+         url('hncb/helveticaneue-condensedbold.svg#HelveticaNeueCondensedBold') format('svg');
+}
+
 body {
-  font-family: "HelveticaNeue-CondensedBold";
+  font-family: "HelveticaNeueCondensedBold";
   font-size: 13px;
   background: #FCFCFC;
   line-height: 0.7;
@@ -87,7 +96,7 @@ a {
 }
 
 .cards li div.subtext span {
-  font-family: "HelveticaNeue-CondensedBold";
+  font-family: "HelveticaNeueCondensedBold";
   font-size: 18px;
 }
 
