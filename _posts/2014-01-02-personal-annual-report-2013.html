@@ -10,15 +10,15 @@ abstract:
 <!--p>For those of you just looking for the actual report, you can find it right <a href="/par/2013/">here</a>.</p-->
 
 <p>Numbers are great! I think we can all agree on that. But I think they have even greater value if they give you insight into something.</p>
-<p>Astound by the incessantly delivered reports from <a href="http://feltron.com/">Nicolas Feltron</a>, the packed article from <a href="http://blog.stephenwolfram.com/2012/03/the-personal-analytics-of-my-life/">Stephen Wolfram</a> and especially the eye-opening reports of <a href="http://jehiah.cz/one-two/">Jehiah Czebotar</a>, I decided to publish <a href="/par/2013/">my own</a> Personal Annual Report.</p>
-<p>Even though my first tracking attempts were as late as September, I'm quite pleased with the results. Following Jehiah's example I've been mostly tracking computer activity (esp. web-usage).</p>
+<p>Astounded by the endless reports from <a href="http://feltron.com/">Nicolas Feltron</a>, the packed article from <a href="http://blog.stephenwolfram.com/2012/03/the-personal-analytics-of-my-life/">Stephen Wolfram</a> and especially the eye-opening reports of <a href="http://jehiah.cz/one-two/">Jehiah Czebotar</a>, I decided to publish <a href="/par/2013/">my own</a> Personal Annual Report.</p>
+<p>Even though my first tracking attempts were as late as September, I'm quite pleased with the results. Following Jehiah's example I've been mostly tracking computer activity (especially web-usage).</p>
 <aside>I've already got some prototypes for new ones, i.e. mouse-heatmaps, keystrokes and more detailed browsing activity.</aside>
 <p>The things I'm tracking include: <i>currently active application, open applications, URL of the frontmost tab, number of open tabs, etc.</i><br />But beyond that I'm hoping that for this year's (2014) report I can include more things.</p>
 
 <h2>Technical Details</h2>
 
-<aside>To collect the network usage I'm polling a <a href="http://humdi.net/vnstat/">vnstat</a> database, every 5 mins, which hooks into the kernel to get the net-usage data.<br /><br /><br />And Applescript, although interesting, isn't the greates language ever.</aside>
-<p>Although the actual report looks fine, I'm not happy with the data collection mechanism. Basically every 15 seconds an activity logging script is run, via cron, which collects data and then writes it to a file. Though there are a number of problems with this implementation. For example, when trying to aggregate the data (in Python) there are numerous occasions where a log file is corrupted and I have no idea why this is. Also running these script, currently written in a mix of Shell and Applescript, is quite slow.</p>
+<aside>To collect the network usage I'm polling a <a href="http://humdi.net/vnstat/">vnstat</a> database, every 5 mins, which hooks into the kernel to get the net-usage data.<br /><br /><br />And Applescript, although interesting, isn't the greatest language ever.</aside>
+<p>Although the actual report looks fine, I'm not happy with the data collection mechanism. Basically every 15 seconds an activity logging script is run, via cron, which collects data and then writes it to a file. Though there are a number of problems with this implementation. For example, when trying to aggregate the data (in Python) there are numerous occasions where a log file is corrupted and I have no idea why this is. Also running these script (currently written in a mix of Shell and Applescript) is quite slow.</p>
 <aside>You can find the current and, hopefully soon, the new implementation <a href="https://github.com/jcla1/quantified_self/">on Github.</a></aside>
 <p>So to solve these problems I've set myself the task to rewrite (and extend) the data collection/aggregation mechanisms.</p>
 <br />
