@@ -1,0 +1,46 @@
+---
+---
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="main.css">
+<title>Personal Annual Report 2013</title>
+</head>
+<body>
+<div id="container">
+<h1>Personal Annual Report 2013</h1>
+<h2 style="font-size:16px; font-family:sans-serif; font-weight:normal;">Read more about it <a style="text-decoration:none;" href="/blog/2014/01/02/personal-annual-report-2013/">here</a></h2>
+<ul class="cards" id="cards"></ul>
+
+<ul class="cards big">
+  <li id="tab_distr">
+    <h2>Distribution of the # open tabs</h2>
+  </li>
+  <li id="search_distr">
+    <h2>Distribution of Google searches</h2>
+  </li>
+  <li id="computer_probability" style="width:750px">
+    <h2>Probability of being at computer</h2>
+  </li>
+</ul>
+
+<h2>Network Usage 2013</h2>
+<div id="netusage"></div>
+
+<h2>Computer Activity</h2>
+<div id="computer_activity_programs"></div>
+<div id="activity"></div>
+
+
+<p class="comment">It took 8.99s and <a href="https://github.com/jcla1/quantified_self/">38 `git commits`</a> to generate this report.<br />Special thanks to <a href="http://twitter.com/jehiah">@jehiah</a> for the help and inspiration.<br />Read more about it <a href="/blog/2014/01/02/personal-annual-report-2013/">here</a>.<br /></p>
+</div>
+</body>
+
+{% include analytics.html %}
+
+<script src="/public/js/d3.v3.min.js?20130214"></script>
+<script src="js/cards.min.js"></script>
+<script src="js/calendar.min.js"></script>
+<script src="js/activity.min.js"></script>
+<script src="js/tab_distr.min.js"></script>
+<script src="js/search_distr.min.js"></script>
+<script src="js/computer_probability.js"></script>

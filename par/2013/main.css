@@ -1,0 +1,196 @@
+body {
+  font-family: "HelveticaNeue-CondensedBold";
+  font-size: 13px;
+  background: #FCFCFC;
+  line-height: 0.7;
+  shape-rendering: crispEdges;
+}
+
+#container {
+  width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+h1 {
+  font-size: 43px;
+  text-align: center;
+  margin: 30px 0 20px 0;
+}
+
+h2 {
+  font-size: 28px;
+  text-align: center;
+  margin: 0 0 20px 0;
+}
+
+a {
+  text-decoration: none;
+  color: #41AB5D;
+}
+
+.cards {
+  list-style: none;
+  display: inline-block;
+  /*margin-bottom: 20px;*/
+  margin-bottom: 0;
+
+  padding: 0 40px 0 40px;
+}
+
+.cards.big {
+  margin-top: 0;
+}
+
+.cards li {
+  width: 230px;
+  height: 130px;
+  float: left;
+  background-color: #FFF;
+
+  margin: 0 15px 30px 15px;
+
+  text-align: center;
+
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.4);
+}
+
+.cards.big li {
+  width: 360px;
+  height: 200px;
+}
+
+
+.cards li h2 {
+  font-weight: bold;
+  font-size: 16px;
+
+  margin: 14px 0 20px 0;
+
+  text-transform: uppercase;
+  color: #888;
+}
+
+.cards.big li h2 {
+  font-size: 18px;
+  margin: 25px 0 5px 0;
+}
+
+.cards li div.value {
+  font-size: 54px;
+  height: 36px
+}
+
+.cards li div.subtext {
+  margin: 20px 0 0 0;
+  font-family: Helvetica Neue;
+}
+
+.cards li div.subtext span {
+  font-family: "HelveticaNeue-CondensedBold";
+  font-size: 18px;
+}
+
+#netusage {
+  margin-bottom: 20px;
+}
+
+#activity {
+  margin-bottom: 20px;
+}
+
+#activity .band_even {
+  fill: #f0f0f0;
+}
+
+#activity .band_odd {
+  fill: #FCFCFC;
+}
+
+#activity .axis path, .axis line {
+  fill: none;
+  stroke: #333;
+}
+
+#computer_activity_programs .activity_btn {
+  display: inline-block;
+  width: 36px;
+  height: 26px;
+  margin: 0 5px 0 5px;
+  border: 1px solid #DDD;
+  border-radius: 5px;
+}
+
+#computer_activity_programs .activity_btn:hover, .activity_btn.active {
+  background-color: #EEE;
+}
+
+#computer_activity_programs .activity_btn img {
+  margin: 5px 0 0 10px;
+}
+
+svg {
+  font: 10px sans-serif;
+}
+
+svg text {
+  fill: #666;
+}
+
+svg .day {
+  fill: #DDD;
+  stroke: #FCFCFC;
+  stroke-width: 2px;
+  shape-rendering: crispedges;
+}
+
+
+.RdYlGn .q0-11{fill: #F7FCB9}
+.RdYlGn .q1-11{fill: #D9F0A3}
+.RdYlGn .q2-11{fill: #ADDD8E}
+.RdYlGn .q3-11{fill: #78C679}
+.RdYlGn .q4-11{fill: #41AB5D}
+.RdYlGn .q5-11{fill: #238443}
+.RdYlGn .q6-11{fill: #006837}
+.RdYlGn .q7-11{fill: #004529}
+
+
+#mouse_heatmap {
+  margin-bottom: 20px
+}
+
+
+.distr .bar {
+  fill: #333;
+}
+
+.axis path, .axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.line {
+  stroke: #000;
+  stroke-width: 1px;
+  fill: none;
+}
+
+.area {
+  fill: #DDD;
+  opacity: 0.1;
+}
+
+.ruler {
+  stroke: #000;
+  display: none;
+}
+
+p.comment {
+  text-align: center;
+  font-family: sans-serif;
+  color: #333;
+  line-height: 1.5em;
+  width: 860px;
+  margin-bottom: 40px;
+}
