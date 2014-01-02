@@ -1,14 +1,6 @@
-@font-face {
-    font-family: 'HelveticaNeueCondensedBold';
-    src: url('hncb_font/helveticaneue-condensedbold.eot');
-    src: url('hncb_font/helveticaneue-condensedbold.eot') format('embedded-opentype'),
-         url('hncb_font/helveticaneue-condensedbold.woff') format('woff'),
-         url('hncb_font/helveticaneue-condensedbold.ttf') format('truetype'),
-         url('hncb_font/helveticaneue-condensedbold.svg#HelveticaNeueCondensedBold') format('svg');
-}
-
 body {
-  font-family: "HelveticaNeueCondensedBold";
+  font-family: "HelveticaNeue-CondensedBold","Helvetica Neue","Arial Narrow",Arial,sans-serif;
+  font-weight: bold;
   font-size: 13px;
   background: #FCFCFC;
   line-height: 0.7;
@@ -92,11 +84,12 @@ a {
 
 .cards li div.subtext {
   margin: 20px 0 0 0;
-  font-family: Helvetica Neue;
+  font-weight: normal;
+  font-family: "Helvetica Neue","Arial Narrow",Arial,sans-serif;
 }
 
 .cards li div.subtext span {
-  font-family: "HelveticaNeueCondensedBold";
+  font-family: "HelveticaNeue-CondensedBold","Helvetica Neue","Arial Narrow",Arial,sans-serif;
   font-size: 18px;
 }
 
