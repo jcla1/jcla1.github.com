@@ -17,7 +17,7 @@ abstract: My first endeavour into self-tracking and personal analytics.
 
 <h2>Technical Details</h2>
 
-<aside>To collect the network usage I'm polling a <a href="http://humdi.net/vnstat/">vnstat</a> database, every 5 mins, which hooks into the kernel to get the net-usage data.<br /><br /><br />And Applescript, although interesting, isn't the greatest language ever.</aside>
+<aside>To collect the network usage I'm polling a <a href="http://humdi.net/vnstat/">vnstat</a> database, every 5 mins, which hooks into the kernel to get the net-usage data.<br /><br />And Applescript, although interesting, isn't the greatest language ever.</aside>
 <p>Although the actual report looks fine, I'm not happy with the data collection mechanism. Basically every 15 seconds an activity logging script is run, via cron, which collects data and then writes it to a file. Though there are a number of problems with this implementation. For example, when trying to aggregate the data (in Python) there are numerous occasions where a log file is corrupted and I have no idea why this is. Also running these script (currently written in a mix of Shell and Applescript) is quite slow.</p>
 <aside>You can find the current and, hopefully soon, the new implementation <a href="https://github.com/jcla1/quantified_self/">on Github.</a></aside>
 <p>So to solve these problems I've set myself the task to rewrite (and extend) the data collection/aggregation mechanisms.</p>
