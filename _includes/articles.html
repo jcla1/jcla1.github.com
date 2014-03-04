@@ -1,0 +1,6 @@
+{% for post in site.posts limit: page.article_limit %}
+<p class="entity">
+    <span class="info"><i>{{ post.date | date: '%B %d, %Y' }}</i></span><a href="{{ post.url }}">{{ post.title }}</a><br>
+    {{ post.abstract }}
+</p>
+{% endfor %}
