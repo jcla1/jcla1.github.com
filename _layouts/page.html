@@ -1,0 +1,14 @@
+---
+layout: default
+---
+<style>p{margin-left: 30px;}</style>
+
+<div itemscope itemtype="http://schema.org/WebPage">
+{% include page_header.html %}
+
+<h1 itemprop="name">{{ page.title }}</h1>
+<meta itemprop="url" content="{{ page.url }}">
+{{ content }}
+
+{% include page_footer.html %}
+</div>
