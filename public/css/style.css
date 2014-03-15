@@ -35,6 +35,10 @@ p {
   width: 720px;
 }
 
+p.entity {
+  margin-bottom: 35px;
+}
+
 blockquote {
   width: 640px;
 }
@@ -70,15 +74,20 @@ pre {
   margin: 2em 0 2em -20px;
 }
 
-h1.age_big {
-  font-size: 224pt;
-  text-align: center;
+span.amp:before {
+  content: '&';
+  font-family: Baskerville, 'Goudy Old Style', Palatino, 'Book Antiqua', "Yanone Kaffeesatz", serif;
+  font-style: italic;
+  font-weight: normal;
 }
 
-span.amp {
-    font-family: Baskerville, 'Goudy Old Style', Palatino, 'Book Antiqua', "Yanone Kaffeesatz", serif;
-    font-style: italic;
-    font-weight: normal;
+span.info {
+  color: #636363;
+  font-size: smaller;
+  margin: 2px 0 0 480px;
+  position: absolute;
+  text-align: right;
+  width: 240px;
 }
 
 /* CODE */
@@ -146,9 +155,14 @@ blockquote:after {
 }
 
 h1 {
-  font-size: 96px;
+  font-size: 70px;
   margin-top: .3em;
   margin-bottom: 0;
+}
+
+h1.age_big {
+  font-size: 224pt;
+  text-align: center;
 }
 
 h1 + h2 {

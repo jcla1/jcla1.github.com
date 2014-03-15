@@ -5,7 +5,7 @@ date: 2012-03-11
 abstract: Looks into creating a simple audio visualizer, which is extended in the <a href="/blog/2012/04/06/web-audio-api-overview-part2/">second part</a>.
 ---
 
-<h1 style="font-size:86px;">{{ page.title }}</h1>
+<h1>{{ page.title }}</h1>
 
 <p>In the next 2 blog posts I'll be showing you some essential features of the Web Audio API. You can find its specification <a href="https://dvcs.w3.org/hg/audio/raw-file/tip/webaudio/specification.html">here</a>.
 The Web Audio API provides nearly all the functionality of a normal synthesizer, one of the reasons why it is so powerful.</p>
@@ -27,11 +27,11 @@ In this first post I'll concentrate on <a href="/iframes/web_audio_intro.html">a
   &lt;script&gt;
   // requestAnim shim layer by Paul Irish
     window.requestAnimFrame = (function(){
-      return  window.requestAnimationFrame       || 
-              window.webkitRequestAnimationFrame || 
-              window.mozRequestAnimationFrame    || 
-              window.oRequestAnimationFrame      || 
-              window.msRequestAnimationFrame     || 
+      return  window.requestAnimationFrame       ||
+              window.webkitRequestAnimationFrame ||
+              window.mozRequestAnimationFrame    ||
+              window.oRequestAnimationFrame      ||
+              window.msRequestAnimationFrame     ||
               function(callback, element){
                 window.setTimeout(callback, 1000 / 60);
               };
@@ -51,7 +51,7 @@ It is a shim by <a href="http://paulirish.com">Paul Irish</a> that makes it easi
 <pre><code>
 // The audio element
 audioElement = document.getElementById('audio');
-  
+
 // The canvas, its context and fillstyle
 canvas = document.getElementById('fft');
 ctx = canvas.getContext('2d');
