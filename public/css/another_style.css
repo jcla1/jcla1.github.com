@@ -44,13 +44,17 @@ h2 a {
   width: 740px;
 }
 
+p {
+  width: 720px;
+}
+
+p.entity {
+  margin-bottom: 35px;
+}
+
 footer {
   font-size: small;
   margin-top: 8em;
-}
-
-header aside {
-  margin-top: 80px;
 }
 
 header aside,
@@ -93,6 +97,22 @@ a {
 
 a:not(:hover) {
   text-decoration: none;
+}
+
+span.amp:before {
+  content: '&';
+  font-family: Baskerville, 'Goudy Old Style', Palatino, 'Book Antiqua', "Yanone Kaffeesatz", serif;
+  font-style: italic;
+  font-weight: normal;
+}
+
+span.info {
+  color: #636363;
+  font-size: smaller;
+  margin: 2px 0 0 480px;
+  position: absolute;
+  text-align: right;
+  width: 240px;
 }
 
 pre, code, textarea {
