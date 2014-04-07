@@ -1,5 +1,8 @@
 safe: true
-permalink: /blog/:year/:month/:day/:title
+permalink: /blog/:title
 title: Joseph Adams
 author: Joseph Adams
 github_username: jcla1
+
+gems:
+    - jekyll-redirect-from
