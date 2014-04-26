@@ -66,11 +66,12 @@ totient(n) = 20
     It would take quite long to work it out by hand so I wrote a small Javascript function that does the work for me:
 
 <pre><code>
-function doLoop(a, b) {
-  for(i=1; i < window.Infinity; i++){
-    x = (a * i -1) % b;
-    if( x === 0 ){
-      console.log(i)
+function doLoop(e, totient) {
+  var i = 1, x;
+  while (true) {
+    x = (e * i - 1) % totient;
+    if (x === 0) {
+      console.log(i);
       break;
     }
   }
