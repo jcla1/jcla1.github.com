@@ -8,7 +8,7 @@
     ga('send', 'pageview');
 
     setTimeout((function(timing) {
-        ga('send', 'event', 'time', 'log', timing);
+        ga('send', 'event', 'time', 'log', 'pagetiming', timing);
         setTimeout(arguments.callee.bind(null, timing+10), 10000);
     }).bind(null, 10), 10000);
 </script>
