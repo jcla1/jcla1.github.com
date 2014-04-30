@@ -1,0 +1,19 @@
+---
+layout: post
+title: Better page timings with Google Analytics
+date: 2014-05-01
+abstract: Experiment to find a better way to track pageview times with Google Analytics.
+---
+
+- Google Analytics is nice, but lacks good measure of page view time,
+  if only one page is visited, like on a blog
+- 1st attempt:
+    - Pageview times went up
+    - Bouncerate went down
+    - Lots of http calls though!
+    - But can we do any better + pageview times seem too long
+- 2nd attempt:
+    - Work with visibility of page to find when to send the
+      pageview event
+    - Maybe just send an event onunload of page, maybe check if
+      user if navigating away from site?
