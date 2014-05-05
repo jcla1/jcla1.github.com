@@ -7,13 +7,13 @@
     ga('create', 'UA-12395541-8', 'jcla1.com');
     // ga('send', 'pageview');
 
-    document.addEventListener("load", setTimeout.bind(pageview_delayer, 5000));
+    window.addEventListener("load", setTimeout.bind(null, pageview_delayer, 2000));
 
     function pageview_delayer() {
         // If the user isn't looking at the page,
         // idle and check again in a few seconds.
         if (is_hidden()) {
-            setTimeout(pageview_delayer, 5000);
+            setTimeout(pageview_delayer, 1000);
             return;
         }
 
@@ -21,7 +21,7 @@
         // pageview and setup a timer to periodically
         // poll the GA server.
         ga('send', 'pageview');
-        setTimeout(event_poller.bind(null, 0), timeout);
+        setTimeout(event_poller.bind(null, 0), 10000);
     }
 
     function event_poller(timing) {
