@@ -5,10 +5,51 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-12395541-8', 'jcla1.com');
-    ga('send', 'pageview');
+    // ga('send', 'pageview');
 
-    setTimeout((function(timing) {
-        ga('send', 'event', 'time', 'log', 'pagetiming', timing);
-        setTimeout(arguments.callee.bind(null, timing+10), 10000);
-    }).bind(null, 10), 10000);
+    document.addEventListener("load", setTimeout.bind(pageview_delayer, 5000));
+
+    function pageview_delayer() {
+        // If the user isn't looking at the page,
+        // idle and check again in a few seconds.
+        if (is_hidden()) {
+            setTimeout(pageview_delayer, 5000);
+            return;
+        }
+
+        // If he is actually on the page, send the
+        // pageview and setup a timer to periodically
+        // poll the GA server.
+        ga('send', 'pageview');
+        setTimeout(event_poller.bind(null, 0), timeout);
+    }
+
+    function event_poller(timing) {
+        ga('send', 'event', 'time', 'log', timing);
+        setTimeout(event_poller.bind(null, timing + 10), 10000);
+    }
+
+    function get_hidden_prop(){
+        var prefixes = ['webkit','moz','ms','o'];
+
+        // if 'hidden' is natively supported just return it
+        if ('hidden' in document) return 'hidden';
+
+        // otherwise loop over all the known prefixes until we find one
+        for (var i = 0; i < prefixes.length; i++) {
+            if ((prefixes[i] + 'Hidden') in document) {
+                return prefixes[i] + 'Hidden';
+            }
+        }
+
+        // otherwise it's not supported
+        return null;
+    }
+
+    function is_hidden() {
+        var prop = get_hidden_prop();
+        if (!prop) return false;
+
+        return document[prop];
+    }
 </script>
