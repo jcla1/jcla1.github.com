@@ -5,28 +5,47 @@
     })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
 
     ga('create', 'UA-12395541-8', 'jcla1.com');
-    // ga('send', 'pageview');
+    track_ga();
 
-    window.addEventListener("load", setTimeout.bind(null, pageview_delayer, 2000));
-
-    function pageview_delayer() {
-        // If the user isn't looking at the page,
-        // idle and check again in a few seconds.
-        if (is_hidden()) {
-            setTimeout(pageview_delayer, 1000);
+    function track_ga() {
+        // Just send the pageview if PageVisibility is not supported
+        if (!get_hidden_prop()) {
+            ga('send', 'pageview');
             return;
         }
 
-        // If he is actually on the page, send the
-        // pageview and setup a timer to periodically
-        // poll the GA server.
-        ga('send', 'pageview');
-        setTimeout(event_poller.bind(null, 0), 10000);
+        if (document.visibilityState == 'prerender') {
+            ga('send', 'event', 'pagedata', 'prerender');
+            return;
+        }
+
+        if (!is_hidden()) {
+            var timeout = setTimeout(function() {
+                ga('send', 'pageview');
+                setup_event_poller();
+            }, 10000);
+
+            document.addEventListener('visibilitychange', function() {
+                document.removeEventListener('visibilitychange', arguments.callee);
+                if (is_hidden()) clearTimeout(timeout);
+            });
+
+        } else {
+            document.addEventListener('visibilitychange', function() {
+                document.removeEventListener('visibilitychange', arguments.callee);
+                track_ga();
+            });
+        }
     }
 
-    function event_poller(timing) {
-        ga('send', 'event', 'time', 'log', timing);
-        setTimeout(event_poller.bind(null, timing + 10), 10000);
+    function setup_event_poller() {
+        var wait = 10000;
+        setTimeout(event_poller.bind(null, 0, wait), wait);
+    }
+
+    function event_poller(timing, wait) {
+        ga('send', 'event', 'time', 'log', String(timing));
+        setTimeout(event_poller.bind(null, timing + wait / 1000, wait), wait);
     }
 
     function get_hidden_prop(){
