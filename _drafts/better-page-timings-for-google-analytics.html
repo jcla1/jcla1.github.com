@@ -7,12 +7,17 @@ abstract: Experiment to find a better way to track pageview times with Google An
 - Google Analytics is nice, but lacks good measure of page view time,
   if only one page is visited, like on a blog
 - 1st attempt:
+    - When user enters page, send pageview and the send events every 10s
     - Pageview times went up
     - Bouncerate went down
-    - Lots of http calls though!
-    - But can we do any better + pageview times seem too long
+    - But can we optimize?
 - 2nd attempt:
     - Work with visibility of page to find when to send the
       pageview event
+    - Should deliver more acurate measure of when page is actually
+      visited
+    - Integrate prerender thing from HTML5Rocks
+- Final thoughts:
     - Maybe just send an event onunload of page, maybe check if
       user if navigating away from site?
+    - Link to stackoverflow question, no answer so far
