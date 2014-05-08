@@ -1,10 +1,36 @@
 ---
 layout: post
-title: Better page timings for Google Analytics
-abstract: Experiment to find a better way to track pageview times with Google Analytics.
+title: Optimizing page timings for Google Analytics
+abstract: Experiment to find a better way to track pageview times with GA.
 ---
 
-- Google Analytics is nice, but lacks good measure of page view time,
+A blog, many of you will have one of those recreational text pads where you jot down some notes you wanted to share with others.
+Sometimes, or in fact very often, you might want to track just _how_ successful these notes are. Well you'll probably already know about Google Analytics (GA).
+It's one of those tools that everyone uses, it's free, it's easy, but it doesn't solve the problem completely.
+What I'm talking about is that Google Analytics' page timings are just plain bad when it comes to blogs.
+Let's consider the sittuation: Someone visits your blog from a link agregator, via an RSS reader or from lumpa-land.
+What will happen is, the visitor reads your article, hopefully likes it, and then leaves your site.
+Now this is the ideal sittuation for showcasing where GA is lacking behind.
+This legitimite visitor, that may have even liked your blog post! will be recorded.
+Of course, you've got GA installed, that's why, but he will be saved as a bounce off your site with zero pageview time.
+So the GA dashboard will tell you something like this: INSERT PICTURE HERE
+<aside>Don't be fooled by the Avg. session duration graph, it only looks spikey, most values there are in fact less than one minute.</aside>
+"Now this surely can't be right, it's impossible to read my blog posts in just 44 seconds", you may think.
+Well, often you're correct, it's Google Analytics' fault that the average session duration is _so_ low.
+But instead of complaining about this, let's fix it!
+
+1st attempt
+-----------
+Now let's consider why Google Analytics' page timings are incorrect.
+Well the root of the cause is that the way GA measures the time spent on a page, they calculate it by taking the difference in time between visiting different pages.
+Ah, see here's the problem! On a blog, like in our scenario, a visitor will only be visiting the one blog post he navigated to in the first place!
+So there's no opportunity for GA to calculate a proper page timing!
+We can easily fix that! Because GA will also consider events as pageviews when it comes to calculating the session duration.
+All we need to do is send off an event at the appropriate time... but when is the appropriate time?
+This is a tough question and it's very hard to answer (but I'll get back to it, I promise), so let's send one every ten seconds, just to make sure.
+
+
+- GA is nice, but lacks good measure of page view time,
   if only one page is visited, like on a blog
 - 1st attempt:
     - When user enters page, send pageview and the send events every 10s
