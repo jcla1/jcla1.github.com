@@ -1,46 +1,35 @@
 ---
 layout: post
 title: Optimizing page timings for Google Analytics
-abstract: Experiment to find a better way to track pageview times with GA.
+abstract: Experiment to find a better way to track pageview times with Google Analytics.
 ---
 
-A blog, many of you will have one of those recreational text pads where you jot down some notes you wanted to share with others.
-Sometimes, or in fact very often, you might want to track just _how_ successful these notes are. Well you'll probably already know about Google Analytics (GA).
-It's one of those tools that everyone uses, it's free, it's easy, but it doesn't solve the problem completely.
-What I'm talking about is that Google Analytics' page timings are just plain bad when it comes to blogs.
-Let's consider the sittuation: Someone visits your blog from a link agregator, via an RSS reader or from lumpa-land.
-What will happen is, the visitor reads your article, hopefully likes it, and then leaves your site.
-Now this is the ideal sittuation for showcasing where GA is lacking behind.
-This legitimite visitor, that may have even liked your blog post! will be recorded.
-Of course, you've got GA installed, that's why, but he will be saved as a bounce off your site with zero pageview time.
-So the GA dashboard will tell you something like this: INSERT PICTURE HERE
+<p>A blog, many of you will have one of those recreational text pads where you jot down some notes you wanted to share with others. Sometimes, or in fact very often, you might want to track just <em>how</em> successful these quick notes are. Well you'll probably already know about Google Analytics.</p>
+<p>It's one of those tools that everyone uses, it's free, it's easy, but it doesn't solve the problem completely. What I'm talking about is that Google Analytics' page timings are just plain bad when it comes to blogs.</p>
+<p>Let's consider the sittuation: Someone visits your blog from a link agreGoogle Analyticstor, via an RSS reader or from lumpa-land. What will happen is, the visitor reads your article, hopefully likes it, and then leaves your site. Now this is the ideal sittuation for showcasing where Google Analytics is lacking behind.</p>
+<p>This legitimite visitor, that may have even liked your blog post! will be recorded. Of course, you've got Google Analytics installed, that's why, but he will be saved as a bounce off of your site with zero pageview time. So the Google Analytics dashboard will tell you something like this: INSERT PICTURE HERE</p>
 <aside>Don't be fooled by the Avg. session duration graph, it only looks spikey, most values there are in fact less than one minute.</aside>
-"Now this surely can't be right, it's impossible to read my blog posts in just 44 seconds", you may think.
-Well, often you're correct, it's Google Analytics' fault that the average session duration is _so_ low.
-But instead of complaining about this, let's fix it!
+<p><q>Now this surely can't be right, it's impossible to read my blog posts in just 44 seconds</q>, you may think. Well, often you're correct, it's Google Analytics' fault that the average session duration is <em>so</em> low. But instead of complaining about this, let's fix it!</p>
 
-1st attempt
------------
-Now let's consider why Google Analytics' page timings are incorrect.
-Well the root of the cause is that the way GA measures the time spent on a page, they calculate it by taking the difference in time between visiting different pages.
-Ah, see here's the problem! On a blog, like in our scenario, a visitor will only be visiting the one blog post he navigated to in the first place!
-So there's no opportunity for GA to calculate a proper page timing!
-We can easily fix that! Because GA will also consider events as pageviews when it comes to calculating the session duration.
-All we need to do is send off an event at the appropriate time... but when is the appropriate time?
-This is a tough question and it's very hard to answer (but I'll get back to it, I promise), so let's send one every ten seconds, just to make sure.
-Here's the adjusted GA snippet:
-<pre><code></code></pre>
-Now what does that give us? Let's see: INSERT PICTURE HERE
-Ah, that's what I like to see! We've got a XXXX.XX% **increase** in the average session duration and the bounce rate dropped by XX%.
-So this solution seems to work, or does it? Because in my oppionion XX mins is quite a long time for reading my relatively short blog posts.
-Maybe we can find an explanation by adjusting our sittuation: Now, the visitor visits your page from a link aggregator and if I think about the way I use link aggregators, I'll exit them with 20 new tabs open.
-See, there's the cause! The visitor opens your blog post, but he may not actually view it until he's finished dealing with the other 19 tabs.
-This wasn't a problem when GA had to figure the average time out by itself, because most recorded timings were zero.
-But now this has changed! Once a user opens the tab with your page loaded in it, we're telling GA that the visitor is on your site!
-So that's the next problem to fix!
+<h2>1st attempt</h2>
 
-2nd attempt
------------
+<p>Now let's consider why Google Analytics' page timings are incorrect. Well the root of the cause is that the way Google Analytics measures the time spent on a page, they calculate it by taking the difference in time between visiting different pages.</p>
+<p>Ah, see here's the problem! On a blog, like in our scenario, a visitor will only be visiting the one blog post he navigated to in the first place! So there's no opportunity for Google Analytics to calculate a proper page timing! We can easily fix that!</p>
+<p>Because Google Analytics will also consider events as pageviews when it comes to calculating the session duration.
+All we need to do is send off an event at the appropriate time... but when is the appropriate time?</p>
+<p>This is a tough question and it's very hard to answer (but I'll get back to it, I promise), so let's send one every ten seconds, just to make sure.
+Here's the adjusted Google Analytics snippet:</p>
+<pre><code>Hello World</code></pre>
+<p>Now what does that give us? Let's see: INSERT PICTURE HERE</p>
+<p>Ah, that's what I like to see! We've got a XXXX.XX% <em>increase</em> in the average session duration and the bounce rate <em>dropped</em> by XX%. So this solution seems to work, or does it? Because I think XX mins is a bit too long for reading my relatively short blog posts.</p>
+<p>Maybe we can find an explanation by adjusting our sittuation: Now, the visitor visits your page from a link aggregator and if I think about the way I use link aggregators, I'll exit them with 20 new tabs open.</p>
+<p>See, there's the cause! The visitor opens your blog post, but he may not actually view it until he's finished dealing with the other 19 tabs. This wasn't a problem when Google Analytics had to figure the average time out by itself, because most recorded timings were zero.</p>
+<p>But now this has changed! Once a user opens the tab with your page loaded in it, we're telling Google Analytics that the visitor is on your site! So that's the next problem to fix!</p>
+
+<h2>2nd attempt</h2>
+
+Final thoughts
+--------------
 
 - 2nd attempt:
     - Work with visibility of page to find when to send the
@@ -50,5 +39,5 @@ So that's the next problem to fix!
     - Integrate prerender thing from HTML5Rocks
 - Final thoughts:
     - Maybe just send an event onunload of page, maybe check if
-      user if navigating away from site?
+      user if naviGoogle Analyticsting away from site?
     - Link to stackoverflow question, no answer so far
