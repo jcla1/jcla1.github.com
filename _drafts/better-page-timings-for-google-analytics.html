@@ -7,7 +7,8 @@ abstract: Experiment to find a better way to track pageview times with Google An
 <p>A blog, many of you will have one of those recreational text pads where you jot down some notes you wanted to share with others. Sometimes, or in fact very often, you might want to track just <em>how</em> successful these quick notes are. Well you'll probably already know about Google Analytics.</p>
 <p>It's one of those tools that everyone uses, it's free, it's easy, but it doesn't solve the problem completely. What I'm talking about is that Google Analytics' page timings are just plain bad when it comes to blogs.</p>
 <p>Let's consider the sittuation: Someone visits your blog from a link agreGoogle Analyticstor, via an RSS reader or from lumpa-land. What will happen is, the visitor reads your article, hopefully likes it, and then leaves your site. Now this is the ideal sittuation for showcasing where Google Analytics is lacking behind.</p>
-<p>This legitimite visitor, that may have even liked your blog post! will be recorded. Of course, you've got Google Analytics installed, that's why, but he will be saved as a bounce off of your site with zero pageview time. So the Google Analytics dashboard will tell you something like this: INSERT PICTURE HERE</p>
+<p>This legitimite visitor, that may have even liked your blog post! will be recorded. Of course, you've got Google Analytics installed, that's why, but he will be saved as a bounce off of your site with zero pageview time. So the Google Analytics dashboard will tell you something like this: </p>
+<img src="/public/img/low-page-time.jpg">
 <aside>Don't be fooled by the Avg. session duration graph, it only looks spikey, most values there are in fact less than one minute.</aside>
 <p><q>Now this surely can't be right, it's impossible to read my blog posts in just 44 seconds</q>, you may think. Well, often you're correct, it's Google Analytics' fault that the average session duration is <em>so</em> low. But instead of complaining about this, let's fix it!</p>
 
@@ -15,10 +16,8 @@ abstract: Experiment to find a better way to track pageview times with Google An
 
 <p>Now let's consider why Google Analytics' page timings are incorrect. Well the root of the cause is that the way Google Analytics measures the time spent on a page, they calculate it by taking the difference in time between visiting different pages.</p>
 <p>Ah, see here's the problem! On a blog, like in our scenario, a visitor will only be visiting the one blog post he navigated to in the first place! So there's no opportunity for Google Analytics to calculate a proper page timing! We can easily fix that!</p>
-<p>Because Google Analytics will also consider events as pageviews when it comes to calculating the session duration.
-All we need to do is send off an event at the appropriate time... but when is the appropriate time?</p>
-<p>This is a tough question and it's very hard to answer (but I'll get back to it, I promise), so let's send one every ten seconds, just to make sure.
-Here's the adjusted Google Analytics snippet:</p>
+<p>Because Google Analytics will also consider events as pageviews when it comes to calculating the session duration. All we need to do is send off an event at the appropriate time... but when is the appropriate time?</p>
+<p>This is a tough question and it's very hard to answer (but I'll get back to it, I promise), so let's send one every ten seconds, just to make sure. Here's the adjusted Google Analytics snippet:</p>
 <pre><code>Hello World</code></pre>
 <p>Now what does that give us? Let's see: INSERT PICTURE HERE</p>
 <p>Ah, that's what I like to see! We've got a XXXX.XX% <em>increase</em> in the average session duration and the bounce rate <em>dropped</em> by XX%. So this solution seems to work, or does it? Because I think XX mins is a bit too long for reading my relatively short blog posts.</p>
