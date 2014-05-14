@@ -1,6 +1,7 @@
 ---
+layout: post
 title: Improving Go cookie handling
-abstract:
+abstract: ABCDE
 ---
 
 - Go's cookiejar is great, because it's built-in. It just works!
@@ -9,4 +10,27 @@ abstract:
   whose cookies you can't control
 - Present workaround for storing cookies in extra jar,
   and also snippet for loading them back in
+<pre><code>cookie := resp.Header.Get("Set-Cookie")
+if cookie != "" {
+    cookie = strings.Replace(cookie, "\\", "_", -1)
+    resp.Header.Set("Set-Cookie", cookie)
+    c.Jar.SetCookies(request.URL, resp.Cookies())
+}
+</code></pre>
+
+<pre><code>cookies := c.Jar.Cookies(request.URL)
+if len(cookies) > 0 {
+    for _, cookie := range cookies {
+        s := cookie.Name + "=\"" + cookie.Value + "\""
+        s = strings.Replace(s, "_", "\\", -1)
+
+        if c := request.Header.Get("Cookie"); c != "" {
+            request.Header.Set("Cookie", c+"; "+s)
+        } else {
+            request.Header.Set("Cookie", s)
+        }
+    }
+}
+</code></pre>
+
 - Include link to Go issue tracker: https://code.google.com/p/go/issues/detail?id=7243
