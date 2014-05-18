@@ -1,22 +1,29 @@
 ---
 layout: post
 title: Improving Go cookie handling
-abstract: ABCDE
+abstract: Finding a way to store non-RFC compliant in the default Go cookie jar.
 ---
 
-- Go's cookiejar is great, because it's built-in. It just works!
-- Though it doesn't accept all cookies, that are not RFC compliant,
-  especially annoying when talking to a 3rd-party server,
-  whose cookies you can't control
-- Present workaround for storing cookies in extra jar,
-  and also snippet for loading them back in
-<pre><code>cookie := resp.Header.Get("Set-Cookie")
+<p>Many people argue, a lot of Go's popularity comes from developers moving to Go from Ruby & Python. And in a way, that may certainly be the case. Because Go, like Python famously, also has Batteries Included &reg;, one of the many reasons I love the language.</p>
+<p>But like everything in the world, Go has its little idiosyncrasies. It's desperately trying to be RFC conformant with its cookie mechanism. Which is the reason, why certain cookies are just ignored by Go's cookie jar. In peticular, Go just ignores cookies that contain characters like: \ (backslash) or " (double quotes).</p>
+<p>Now there might have been good reasons to exclude these from the set of valid characters, i.e. it's obviously necessary to exclude a semi-colon, the cookie delimiter. But never the less, there may be sittuations in which Go will have to put up with servers sending cookie headers which are, acording to the RFC, just plain wrong and invalid.</p>
+<p>And this is exactly the sittuation I encountered! For <a href="https://github.com/jcla1/goquizduell">a Quizduell API library</a> I was working on, I also had to talk to their 3rd-party server. And, you guessed it, they sent invalid cookies!</p>
+<p>So after about 3 hours, the time it took me to debug why all API calls weren't authenticated, I came across <a href="https://code.google.com/p/go/issues/detail?id=7243">an issue</a> on the Go issue tracker, where a similar problem to mine was explained (basically, someone wanted to be able to have commas in cookies). And though the issue was resolved and a patch to allow commas in cookies was merged, the comments clearly indicated that the Go maintainers weren't happy with the idea of loosening the cookie character restrictions (although most browsers allow practically any character in a cookie).</p>
+<p>Knowing that my problem was an acknowleged issue, I was still left with my problem, that I needed to fix. Looking for a solution, that was <em>not</em> copying the whole cookiejar implementation to a new package and just modifying this tiny function that checked wether a character is valid or not, I came up with the following solution:</p>
+
+<aside>Note: I was looking to replace backslashes, but this should work with any character. Just modify the the character string that gets replaced.</aside>
+
+<pre><code>cookie := response.Header.Get("Set-Cookie")
 if cookie != "" {
     cookie = strings.Replace(cookie, "\\", "_", -1)
-    resp.Header.Set("Set-Cookie", cookie)
-    c.Jar.SetCookies(request.URL, resp.Cookies())
+    response.Header.Set("Set-Cookie", cookie)
+    c.Jar.SetCookies(request.URL, response.Cookies())
 }
 </code></pre>
+
+<aside>In the code example, <code>c</code> is the API client that has his own cookiejar, since the http client's jar is private.</aside>
+
+<p>Simply put, this snippet just takes the raw cookie string and replaces, in this case, the backslash with an underscore (a character known not to occur in cookies issued by the Quizduell servers), puts the cookie back into the http response and manually tells the API client's cookiejar to store the cookies of this peticular response. Notice, you need your own cookiejar (<code>c.Jar</code>), since the one included in http clients is private.</p>
 
 <pre><code>cookies := c.Jar.Cookies(request.URL)
 if len(cookies) > 0 {
