@@ -1,11 +1,11 @@
 ---
 layout: post
 title: Improving Go cookie handling
-abstract: Finding a way to store non-RFC compliant in the default Go cookie jar.
+abstract: Finding a way to store non-RFC compliant in the default Go cookiejar.
 ---
 
 <p>Many people argue, a lot of Go's popularity comes from developers moving to Go from Ruby & Python. And in a way, that may certainly be the case. Because Go, like Python famously, also has Batteries Included &reg;, one of the many reasons I love the language.</p>
-<p>But like everything in the world, Go has its little idiosyncrasies. It's desperately trying to be RFC conformant with its cookie mechanism. Which is the reason, why certain cookies are just ignored by Go's cookie jar. In peticular, Go just ignores cookies that contain characters like: \ (backslash) or " (double quotes).</p>
+<p>But like everything in the world, Go has its little idiosyncrasies. It's desperately trying to be RFC conformant with its cookie mechanism. Which is the reason, why certain cookies are just ignored by Go's cookiejar. In peticular, Go just ignores cookies that contain characters like: \ (backslash) or " (double quotes).</p>
 <p>Now there might have been good reasons to exclude these from the set of valid characters, i.e. it's obviously necessary to exclude a semi-colon, the cookie delimiter. But never the less, there may be sittuations in which Go will have to put up with servers sending cookie headers which are, acording to the RFC, just plain wrong and invalid.</p>
 <p>And this is exactly the sittuation I encountered! For <a href="https://github.com/jcla1/goquizduell">a Quizduell API library</a> I was working on, I also had to talk to their 3rd-party server. And, you guessed it, they sent invalid cookies!</p>
 <p>So after about 3 hours, the time it took me to debug why all API calls weren't authenticated, I came across <a href="https://code.google.com/p/go/issues/detail?id=7243">an issue</a> on the Go issue tracker, where a similar problem to mine was explained (basically, someone wanted to be able to have commas in cookies). And though the issue was resolved and a patch to allow commas in cookies was merged, the comments clearly indicated that the Go maintainers weren't happy with the idea of loosening the cookie character restrictions (although most browsers allow practically any character in a cookie).</p>
@@ -43,6 +43,5 @@ if len(cookies) > 0 {
 </code></pre>
 
 <p>But the idea is the same, load the cookie as a raw string, replace the underscores with the forbidden backslashes and manually attach the cookie as a header on the request.</p>
-<p>And it works! perfectly fine in fact. Though as you can guess, this is not the ideal solution for all possible sittuations. We quickly run into a problem if there's no character where we know that it won't occur in the cookie (in our case that was the underscore, incase you haven't noticed yet). So this got me thinking, and I've thought of something else that will always work, but comes at the cost of slower loading and saving of the cookies. Though these slowdowns will be negligible for most applications.</p>
-
-<h2>There she blows! Base64 encoding</h2>
+<p>And it works! perfectly fine in fact. Though as you can guess, this is not the ideal solution for all possible sittuations. We quickly run into a problem if there's no character where we know that it won't occur in the cookie (in our case that was the underscore, incase you haven't noticed yet).</p>
+<p>A possible workaround would be to base64 encode the relevant cookies and store the encoded version in the cookiejar.</p>
