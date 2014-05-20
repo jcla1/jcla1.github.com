@@ -11,7 +11,7 @@ abstract: Finding a way to store non-RFC compliant in the default Go cookiejar.
 <p>So after about 3 hours, the time it took me to debug why all API calls weren't authenticated, I came across <a href="https://code.google.com/p/go/issues/detail?id=7243">an issue</a> on the Go issue tracker, where a similar problem to mine was explained (basically, someone wanted to be able to have commas in cookies). And though the issue was resolved and a patch to allow commas in cookies was merged, the comments clearly indicated that the Go maintainers weren't happy with the idea of loosening the cookie character restrictions (although most browsers allow practically any character in a cookie).</p>
 <p>Knowing that my problem was an acknowleged issue, I was still left with my problem, that I needed to fix. Looking for a solution, that was <em>not</em> copying the whole cookiejar implementation to a new package and just modifying this tiny function that checked wether a character is valid or not, I came up with the following solution:</p>
 
-<aside>Note: I was looking to replace backslashes, but this should work with any character. Just modify the the character string that gets replaced.</aside>
+<aside>I was looking to replace backslashes, but this should work with any character. Just modify the the character string that gets replaced.</aside>
 
 <pre><code>cookie := response.Header.Get("Set-Cookie")
 if cookie != "" {
