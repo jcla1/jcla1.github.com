@@ -1,116 +1,95 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <title>Resumé</title>
-        <link rel="stylesheet" href="//fonts.googleapis.com/css?family=Yanone+Kaffeesatz:400,700">
-        <link rel="stylesheet" href="/public/css/style.css" type="text/css" />
-        <style>
-            #container {
-                width: 750px;
-                margin: auto;
-            }
+---
+layout: default
+title: Résumé
+---
+<style>
+    #container {
+        width: 750px;
+        margin: auto;
+    }
 
-            ul {
-                list-style: none;
-            }
-        </style>
-    </head>
-    <body>
-        <div id='container'>
-        <div>
-            <h1 id="joseph-adams">Joseph Adams</h1>
-            <ul>
-                <li>
-                    <p>Birth Date: 25/04/1997</p>
-                </li>
-                <li>
-                    <p>Nationality: British &amp; German</p>
-                </li>
-                <li>
-                    <p>Languages Spoken: German &amp; English</p>
-                </li>
-                <li>
-                    <p>Home Page: <a href="http://jcla1.com/">jcla1.com</a></p>
-                </li>
-            </ul>
-            <h2 id="contact-details">Contact Details</h2>
-            <ul>
-                <li>
-                    Email: <script type="text/javascript">
-                        <!--
-                            h='&#x67;&#x6d;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;';a='&#64;';n='&#x77;&#104;&#x69;&#116;&#x65;&#x67;&#x6f;&#108;&#x65;&#x6d;';e=n+a+h;
-                            document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+'<code>'+e+'</code>'+'<\/'+'a'+'>');
-                            // -->
-                    </script>
-                    <noscript>&#x77;&#104;&#x69;&#116;&#x65;&#x67;&#x6f;&#108;&#x65;&#x6d;&#32;&#x61;&#116;&#32;&#x67;&#x6d;&#x61;&#x69;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#x6f;&#x6d;</noscript>
-                </li>
-            </ul>
-            <h2 id="education">Education</h2>
-            <ul>
-                <li>
-                    <p><strong>Maria-Sibylla-Merian Gymnasium, Krefeld</strong> (2007 - 2015 expected)</p>
-                    <p>Majoring in Mathematics &amp; Physics</p>
-                </li>
-                <li>
-                    <p><strong>Machine Learning Course, Coursera</strong> (April - August 2013)</p>
-                </li>
-            </ul>
-            <h2 id="selected-open-source-projects">Selected Open Source Projects</h2>
-            <ul>
-                <li>
-                    <p><strong><a href="https://github.com/jcla1/gisp">Gisp</a></strong> (Go)</p>
-                    <p>A simple compiler of Lisp/Scheme to Go, with lexer, simple recursive parser, tail call optimisation and a REPL that generates abstract syntax trees</p>
-                </li>
-                <li>
-                    <p><strong><a href="https://github.com/kennyledet/Algorithm-Implementations">Algorithm Implementations</a></strong> (various)</p>
-                    <p>Major contributor to collection of algorithm implementations in multiple languages</p>
-                </li>
-                <li>
-                    <p><strong><a href="https://github.com/jcla1/quantified_self">Quantified Self</a></strong> (Bash, Python, Javascript)</p>
-                    <p>Scripts for self-tracking and personal analytics, including Python-based aggregators and shell-based collectors for OSX and visualisations using D3.js</p>
-                </li>
-                <li>
-                    <p><strong><a href="https://github.com/jcla1/nn">Neural Network Library</a></strong> (Go)</p>
-                    <p>A feed-forward neural network library</p>
-                </li>
-                <li>
-                    <p><strong><a href="https://github.com/jcla1/wikipedia_analyser">Wikipedia Analyser</a></strong> (Go)</p>
-                    <p>Analyses Wikipedia lexically and structurally using the Neural Network Library and an n-gram model to analyse the sentence fragments; built around a pipeline to enable distribution across multiple cores</p>
-                </li>
-            </ul>
-            <h2 id="main-languages">Main Languages</h2>
-            <ul>
-                <li>Go, Javascript, Python, Ruby</li>
-            </ul>
-            <h2 id="selected-articles">Selected Articles</h2>
-            <ul>
-                <li>
-                    <p><strong><a href="http://jcla1.com/papers/wikipedia_analysis.pdf">Automatische Suche von sprachlich optimierbaren Wikipedia Artikeln mittels Analyse der formalen Gestaltungs- und sprachlichen Ausdrucksmerkmalen</a></strong>, 2014</p>
-                    <p>Automatic search of Wikipedia articles for language improvements, through analysis of the formal structure and linguistic expression features</p>
-                </li>
-                <li>
-                    <p><strong><a href="http://jcla1.com/blog/javascript-mapreduce">Javascript and MapReduce</a></strong>, 2013</p>
-                </li>
-                <li>
-                    <p><strong><a href="http://jcla1.com/blog/exploring-the-v8-js-engine-part-1">Exploring the V8 JS engine</a></strong>, 2012</p>
-                </li>
-            </ul>
-            <h2 id="talks">Talks</h2>
-            <ul>
-                <li><strong>FOSDEM 2014</strong>, Brussels: &quot;<a href="http://jcla1.com/blog/fosdem-lightning-talk-video/">Gisp: Compiling Lisp to Go</a>&quot;</li>
-            </ul>
-            <h2 id="conferences-events-attended">Conferences &amp; Events Attended</h2>
-            <ul>
-                <li>
-                    <p><strong><a href="https://www.google.com/events/io">Google I/O 2011</a></strong>, San Francisco</p>
-                </li>
-                <li>
-                    <p><strong><a href="https://fosdem.org/2014/">FOSDEM 2014</a></strong>, Brussels</p>
-                </li>
-                <li><strong><a href="http://youngrewiredstate.org/">YRS 2011 - 2013</a></strong>, Manchester, London and Birmingham
-        </div>
+    ul {
+        list-style: none;
+    }
+</style>
+
+<div id='container'>
+    <h1 id="joseph-adams">Joseph Adams</h1>
+    <ul>
+        <li><p>Birth Date: 25/04/1997</p></li>
+        <li><p>Nationality: British &amp; German</p></li>
+        <li><p>Languages Spoken: German &amp; English</p></li>
+        <li><p>Home Page: <a href="http://jcla1.com/">jcla1.com</a></p></li>
+    </ul>
+
+    <h2 id="contact-details">Contact Details</h2>
+    <ul>
+        <li>
+            Email: <script type="text/javascript">
+                <!--
+                    h='&#x67;&#x6d;&#x61;&#x69;&#108;&#46;&#x63;&#x6f;&#x6d;';a='&#64;';n='&#x77;&#104;&#x69;&#116;&#x65;&#x67;&#x6f;&#108;&#x65;&#x6d;';e=n+a+h;
+                    document.write('<a h'+'ref'+'="ma'+'ilto'+':'+e+'">'+'<code>'+e+'</code>'+'<\/'+'a'+'>');
+                    // -->
+            </script>
+            <noscript>&#x77;&#104;&#x69;&#116;&#x65;&#x67;&#x6f;&#108;&#x65;&#x6d;&#32;&#x61;&#116;&#32;&#x67;&#x6d;&#x61;&#x69;&#108;&#32;&#100;&#x6f;&#116;&#32;&#x63;&#x6f;&#x6d;</noscript>
         </li>
-        </ul>
-    </body>
-</html>
+    </ul>
+
+    <h2 id="education">Education</h2>
+    <ul>
+        <li>
+            <p><strong>Maria-Sibylla-Merian Gymnasium, Krefeld</strong> (2007 - 2015 expected)</p>
+            <p>Majoring in Mathematics &amp; Physics</p>
+        </li>
+        <li><p><strong>Machine Learning Course, Coursera</strong> (April - August 2013)</p></li>
+    </ul>
+
+    <h2 id="selected-open-source-projects">Selected Open Source Projects</h2>
+    <ul>
+        <li>
+            <p><strong><a href="https://github.com/jcla1/gisp">Gisp</a></strong> (Go)</p>
+            <p>A simple compiler of Lisp/Scheme to Go, with lexer, simple recursive parser, tail call optimisation and a REPL that generates abstract syntax trees</p>
+        </li>
+        <li>
+            <p><strong><a href="https://github.com/kennyledet/Algorithm-Implementations">Algorithm Implementations</a></strong> (various)</p>
+            <p>Major contributor to collection of algorithm implementations in multiple languages</p>
+        </li>
+        <li>
+            <p><strong><a href="https://github.com/jcla1/quantified_self">Quantified Self</a></strong> (Bash, Python, Javascript)</p>
+            <p>Scripts for self-tracking and personal analytics, including Python-based aggregators and shell-based collectors for OSX and visualisations using D3.js</p>
+        </li>
+        <li>
+            <p><strong><a href="https://github.com/jcla1/nn">Neural Network Library</a></strong> (Go)</p>
+            <p>A feed-forward neural network library</p>
+        </li>
+        <li>
+            <p><strong><a href="https://github.com/jcla1/wikipedia_analyser">Wikipedia Analyser</a></strong> (Go)</p>
+            <p>Analyses Wikipedia lexically and structurally using the Neural Network Library and an n-gram model to analyse the sentence fragments; built around a pipeline to enable distribution across multiple cores</p>
+        </li>
+    </ul>
+
+    <h2 id="main-languages">Main Languages</h2>
+    <ul>
+        <li>Go, Javascript, Python, Ruby</li>
+    </ul>
+
+    <h2 id="selected-articles">Selected Articles</h2>
+    <ul>
+        <li>
+            <p><strong><a href="http://jcla1.com/papers/wikipedia_analysis.pdf">Automatische Suche von sprachlich optimierbaren Wikipedia Artikeln mittels Analyse der formalen Gestaltungs- und sprachlichen Ausdrucksmerkmalen</a></strong>, 2014</p>
+            <p>Automatic search of Wikipedia articles for language improvements, through analysis of the formal structure and linguistic expression features</p>
+        </li>
+        <li><p><strong><a href="http://jcla1.com/blog/javascript-mapreduce">Javascript and MapReduce</a></strong>, 2013</p></li>
+        <li><p><strong><a href="http://jcla1.com/blog/exploring-the-v8-js-engine-part-1">Exploring the V8 JS engine</a></strong>, 2012</p></li>
+    </ul>
+
+    <h2 id="talks">Talks</h2>
+    <ul><li><strong>FOSDEM 2014</strong>, Brussels: &quot;<a href="http://jcla1.com/blog/fosdem-lightning-talk-video/">Gisp: Compiling Lisp to Go</a>&quot;</li></ul>
+
+    <h2 id="conferences-events-attended">Conferences &amp; Events Attended</h2>
+    <ul>
+        <li><p><strong><a href="https://www.google.com/events/io">Google I/O 2011</a></strong>, San Francisco</p></li>
+        <li><p><strong><a href="https://fosdem.org/2014/">FOSDEM 2014</a></strong>, Brussels</p></li>
+        <li><p><strong><a href="http://youngrewiredstate.org/">YRS 2011 - 2013</a></strong>, Manchester, London and Birmingham</p></li>
+    </ul>
+</div>
