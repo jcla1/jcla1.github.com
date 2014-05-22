@@ -39,16 +39,56 @@ setTimeout((function(timing) {
 
 <h2>2nd attempt</h2>
 
-Final thoughts
---------------
+<p>As I said, we need to find out, when the user actually starts viewing your blog post. But how are we going to do that? Well, this is the ideal situation to show off the relatively new <a href="http://www.w3.org/TR/page-visibility/">Page Visibility API</a>. It can tell us if the browser's frontmost tab contains our site, or not.</p>
+<p>This should deliver a more acurate mesure of when the page is actually viewed and read. But we can't just wait until a user views our page, i.e. the visibility event fires, because the user might just swift briefly over the tab, when navigating between them, for example.</p>
+<pre><code><span class="grayout">ga('create', 'UA-XXXXXXXX-X', 'example.com');</span>
+track_ga();
 
-- 2nd attempt:
-    - Work with visibility of page to find when to send the
-      pageview event
-    - Should deliver more acurate measure of when page is actually
-      visited
-    - Integrate prerender thing from HTML5Rocks
-- Final thoughts:
-    - Maybe just send an event onunload of page, maybe check if
-      user if naviGoogle Analyticsting away from site?
-    - Link to stackoverflow question, no answer so far
+function track_ga() {
+    // We can be quite sure that the user _is_ on our page,
+    // once he's there for more than 10s
+    var waiting_time = 10000;
+
+    // Just send the pageview if page visibility is not supported
+    if (!get_hidden_prop()) {
+        ga('send', 'pageview');
+        return;
+    }
+
+    if (!is_hidden()) {
+        // If the page is visible, setup a timeout to send
+        // the pageview, that gets cancelled when the user
+        // navigates away from the page too soon.
+        var timeout = setTimeout(function() {
+            ga('send', 'pageview');
+            setTimeout(event_poller.bind(null, 0, waiting_time), waiting_time);
+        }, waiting_time);
+
+        document.addEventListener('visibilitychange', function() {
+            document.removeEventListener('visibilitychange', arguments.callee);
+            if (is_hidden()) clearTimeout(timeout);
+        });
+    } else {
+        // Otherwise, wait until the page becomes visible again
+        // and do everything over again.
+        document.addEventListener('visibilitychange', function() {
+            document.removeEventListener('visibilitychange', arguments.callee);
+            track_ga();
+        });
+    }
+}
+
+// Same as our previous periodic GA event sender.
+function event_poller(timing, wait) {
+    ga('send', 'event', 'time', 'log', String(timing));
+    setTimeout(event_poller.bind(null, timing + wait / 1000, wait), wait);
+}
+</code></pre>
+
+<p>As you see, this version is a lot more complicated than our initial snippet, but will it improve our measurements?</p>
+
+<img src="/public/img/high-page-time-2.jpg">
+
+<h2>Final thoughts</h2>
+
+<p></p>
