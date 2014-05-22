@@ -61,7 +61,8 @@ pre, code, textarea {
 }
 
 code {
-  line-height: 1em;
+  line-height: 13px;
+  font-size: 13px;
 }
 
 textarea {
