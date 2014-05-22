@@ -18,8 +18,7 @@ You can find the package that contains the column definition for the bookmarks a
 <p>So let's get started!</p>
 Let's first set up all the variables:
 
-<pre><code>
-import android.widget.Button;
+<pre><code>import android.widget.Button;
 import android.provider.Browser;
 import android.net.Uri;
 
@@ -44,8 +43,7 @@ String[] columns = new String[] {
 Now that we have the basic variables we can write the cursor. The function that creates it takes a lot of
 arguments. As you can see not many of these are important for us:
 
-<pre><code>
-import android.database.Cursor;
+<pre><code>import android.database.Cursor;
 
 Cursor managedCursor = managedQuery(
     bookmarks, // URI of the resource
@@ -58,8 +56,7 @@ Cursor managedCursor = managedQuery(
 Next we'll make a new onClick listener for the button. This listener basically loops
 through all the data rows and does something with them:
 
-<pre><code>
-import android.view.View.OnClickListener;
+<pre><code>import android.view.View.OnClickListener;
 
 getBookmarksButton.setOnClickListener(new OnClickListener() {
     @Override

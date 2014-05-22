@@ -16,8 +16,7 @@ redirect_from: /blog/2011/12/10/rsa-public-private-key-encryption-explained/
       <p>Think of 2 prime numbers.</p>
 
       <p>In real openssl, these prime numbers are very large and have a similar bit-size. So that we have no problem doing the calculations I'll choose 2 numbers that are quite small:</p>
-      <pre><code>
-p = 3, q = 11
+      <pre><code>p = 3, q = 11
       </code></pre>
 
     </li>
@@ -39,8 +38,7 @@ p = 3, q = 11
     <p>This equals <code>20</code>.</p>
 
     So far we have:
-<pre><code>
-p = 3
+<pre><code>p = 3
 q = 11
 n = 33
 totient(n) = 20
@@ -64,8 +62,7 @@ totient(n) = 20
     <pre><code>(e * x - 1) mod (totient(n)) = 0</code></pre>
     It would take quite long to work it out by hand so I wrote a small Javascript function that does the work for me:
 
-<pre><code>
-function doLoop(e, totient) {
+<pre><code>function doLoop(e, totient) {
   var i = 1, x;
   while (true) {
     x = (e * i - 1) % totient;
@@ -84,8 +81,7 @@ function doLoop(e, totient) {
     <p>Putting it all together</p>
 
     <p>All the values up to now:</p>
-<pre><code>
-p = 3
+<pre><code>p = 3
 q = 11
 n = 33
 totient(n) = 20

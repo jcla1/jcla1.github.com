@@ -29,8 +29,7 @@ redirect_from: /blog/2012/01/08/exploring-the-v8-js-engine-part-2/
 
 <p>This program will create the variable <code>pid</code> in the Javascript's context:</p>
 
-<pre><code>
-#include &lt;v8.h&gt;
+<pre><code>#include &lt;v8.h&gt;
 #include &lt;unistd.h&gt;
 // Include the header that contains the "getpid()" function
 
@@ -71,8 +70,7 @@ int main(int argc, char* argv[]) {
 </code></pre>
 
 <p>If you save it in a file called <code>variable_share_unchangeable.cc</code> (in <code>~/dev/v8/</code>) you can compile and run it with:</p>
-<pre><code>
-$ g++ -m32 -Iinclude libv8.a -lpthread variable_share_unchangeable.cc \
+<pre><code>$ g++ -m32 -Iinclude libv8.a -lpthread variable_share_unchangeable.cc \
   -o variable_share_unchangeable
 </code></pre>
 <p><em>For more information on running and compiling see <a href="http://jcla1.com/blog/2012/01/07/exploring-the-v8-js-engine-part-1/">the first post</a></em></p>
@@ -85,8 +83,7 @@ $ g++ -m32 -Iinclude libv8.a -lpthread variable_share_unchangeable.cc \
 <p>As I said before, you need to define a "Getter" and "Setter" for each variable you want to share.
 Here is a program that demonstrates the use of shared changeable variables:</p>
 
-<pre><code>
-#include &lt;v8.h&gt;
+<pre><code>#include &lt;v8.h&gt;
 
 using namespace v8;
 
@@ -168,8 +165,7 @@ int main(int argc, char* argv[]) {
 <p>An example of a changeable variable in Node.js is the <code>process.title</code>, it is the name or the title of the current program.</p>
 <p>Try it out by doing:</p>
 
-<pre><code>
-$ node
+<pre><code>$ node
 > process.title = "this_is_a_test";
 'this_is_a_test'
 </code></pre>

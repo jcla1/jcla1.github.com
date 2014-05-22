@@ -34,8 +34,7 @@ redirect_from: /blog/2012/01/07/exploring-the-v8-js-engine-part-1/
 </ul>
 
 <p>To download the source type this into you terminal:</p>
-<pre><code>
-$ mkdir ~/dev/
+<pre><code>$ mkdir ~/dev/
 $ cd ~/dev/
 $ svn checkout http://v8.googlecode.com/svn/trunk/ v8-read-only
 $ mv v8-read-only v8
@@ -43,8 +42,7 @@ $ mv v8-read-only v8
 
 <p>Now you have the source you can build the V8 library and header file:</p>
 
-<pre><code>
-$ scons
+<pre><code>$ scons
 scons: Reading SConscript files ...
 scons: done reading SConscript files.
 scons: Building targets ...
@@ -59,8 +57,7 @@ scons: Building targets ...
 
 <p>Here is a simple C++ program that runs the Javascript: <code>"Hello World!"</code>. Obviously, this is not a very spectacular Javascript program, but it should do to our needs. The comments explain what a each part does:</p>
 
-<pre><code>
-#include <v8.h>
+<pre><code>#include <v8.h>
 
 using namespace v8;
 
@@ -99,15 +96,13 @@ int main(int argc, char* argv[]) {
 
 <p>Save that in a file called hello_world.cc in the <code>~/dev/v8/</code> directory.</p>
 <p>Next you need to compile the <code>hello_world.cc</code> file by doing:</p>
-<pre><code>
-$ g++ -m32 -Iinclude libv8.a -lpthread hello_world.cc -o hello_world
+<pre><code>$ g++ -m32 -Iinclude libv8.a -lpthread hello_world.cc -o hello_world
 </code></pre>
 
 <p>This compiles the hello world program to a 32-bit executable that includes the <code>libv8.a</code> library.</p>
 <p>If the compilation was successful you should have a new file called <code>hello_world</code> in your V8
 directory. Then you execute the file and it should print out "Hello World!" (without the quotes):</p>
-<pre><code>
-$ ./hello_world
+<pre><code>$ ./hello_world
 Hello World!
 </code></pre>
 

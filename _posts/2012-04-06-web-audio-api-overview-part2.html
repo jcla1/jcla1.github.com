@@ -13,8 +13,7 @@ We'll add some colour to it too.</p>
 To change the color of the bars, all you need to do is change <code>ctx.fillStyle = "white";</code> to whatever color.
 If you're like me, you won't like single color bars. I think those bars deserve a nice rainbow gradient. This is done very easily:</p>
 
-<pre><code>
-gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+<pre><code>gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
 
 gradient.addColorStop(0, "rgba(255, 0, 0, 1)");
 gradient.addColorStop(0.15, "rgba(255, 255, 0, 1)");
@@ -31,8 +30,7 @@ ctx.fillStyle = gradient;
 
 <p>Next up, gain. You can create one just like an analyser:</p>
 
-<pre><code>
-source = audioContext.createMediaElementSource(audioElement);
+<pre><code>source = audioContext.createMediaElementSource(audioElement);
 gain = audioContext.createGainNode();
 analyser = audioContext.createAnalyser();
 
@@ -52,8 +50,7 @@ analyser.connect(audioContext.destination);
 <p>The reason it has a max value of 1 is that the <code>GainNode</code> by default sets this value (It is possible to change this).
 Of course an input alone doesn't do anything. We'll add an event listener to it:</p>
 
-<pre><code>
-document.getElementById("gain").addEventListener('change',
+<pre><code>document.getElementById("gain").addEventListener('change',
   function(e){
   gain.gain.value = this.value
 });
