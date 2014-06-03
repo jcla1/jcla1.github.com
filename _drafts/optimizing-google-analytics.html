@@ -17,7 +17,7 @@ abstract: Experiment to find a better way to track pageview times with Google An
 <p>Now let's consider why Google Analytics' page timings are incorrect. Well the root of the cause is that the way Google Analytics measures the time spent on a page, they calculate it by taking the difference in time between visiting different pages.</p>
 <p>Ah, see here's the problem! On a blog, like in our scenario, a visitor will only be visiting the one blog post he navigated to in the first place! So there's no opportunity for Google Analytics to calculate a proper page timing! We can easily fix that!</p>
 <p>Because Google Analytics will also consider events as pageviews when it comes to calculating the session duration. All we need to do is send off an event at the appropriate time... but when is the appropriate time?</p>
-<p>This is a tough question and it's very hard to answer (but I'll get back to it, I promise), so let's send one every ten seconds, just to make sure. Here's the adjusted Google Analytics snippet:</p>
+<p>This is a tough question and it's very hard to answer, so let's send one every ten seconds, just to make sure. Here's the adjusted Google Analytics snippet:</p>
 <aside>The grayed-out parts of the code, are the default Google Analytics provides for you.</aside>
 <pre><code><span class="grayout">ga('create', 'UA-XXXXXXXX-X', 'example.com');
 ga('send', 'pageview');</span>
@@ -90,6 +90,9 @@ function event_poller(timing, wait) {
 
 <img src="/public/img/high-page-time-2.jpg">
 
+<p>Hmm, no not really. So it seems, that's the best we can get with this technique.</p>
+
 <h2>Final thoughts</h2>
 
-<p></p>
+<p>Although our second attempt didn't yield the expected results, I can still confidently say, that the second snippet is better than the first. For one, it saves resources (network), due to the fact that we only start sending events once the user is actually active on your site, which is especially important if you've got a lot of mobile vistors reading your blog. And the page timings are definately more acurate than with the default page timing mechanism. But with the second snippet we also get insight into when our pages are just prerendered.</p>
+<p>So as you see, there doesn't seem to be a perfect solution, yet.</p>
