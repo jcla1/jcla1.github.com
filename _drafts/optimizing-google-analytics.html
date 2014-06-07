@@ -4,9 +4,9 @@ title: Optimizing page timings for Google Analytics
 abstract: Experiment to find a better way to track pageview times with Google Analytics.
 ---
 
-<p>A blog, many of you will have one of those recreational text pads where you jot down some notes you wanted to share with others. Sometimes, or in fact very often, you might want to track just <em>how</em> successful these quick notes are. Well you'll probably already know about Google Analytics.</p>
+<p>Many of you will have one of those recreational text pads where you jot down some notes you wanted to share with others. Like a blog. Sometimes, or in fact very often, you might want to track just <em>how</em> successful these quick notes are. Well you'll probably already know about Google Analytics.</p>
 <p>It's one of those tools that everyone uses, it's free, it's easy, but it doesn't solve the problem completely. What I'm talking about is that Google Analytics' page timings are just plain bad when it comes to blogs.</p>
-<p>Let's consider the sittuation: Someone visits your blog from a link agregator, via an RSS reader or from lumpa-land. What will happen is, the visitor reads your article, hopefully likes it, and then leaves your site. Now this is the ideal sittuation for showcasing where Google Analytics is lacking behind.</p>
+<p>Let's consider the situation : Someone visits your blog from a link aggregator, via an RSS reader or from lumpa-land. What will happen is, the visitor reads your article, hopefully likes it, and then leaves your site. Now this is the ideal situation for showcasing where Google Analytics is lacking somewhat.</p>
 <p>This legitimite visitor, that may have even liked your blog post! will be recorded. Of course, you've got Google Analytics installed, that's why, but he will be saved as a bounce off of your site with zero pageview time. So the Google Analytics dashboard will tell you something like this: </p>
 <img src="/public/img/low-page-time.jpg">
 <aside>Don't be fooled by the Avg. session duration graph, it only looks spikey, most values there are in fact less than one minute.</aside>
@@ -15,7 +15,7 @@ abstract: Experiment to find a better way to track pageview times with Google An
 <h2>1st attempt</h2>
 
 <p>Now let's consider why Google Analytics' page timings are incorrect. Well the root of the cause is that the way Google Analytics measures the time spent on a page, they calculate it by taking the difference in time between visiting different pages.</p>
-<p>Ah, see here's the problem! On a blog, like in our scenario, a visitor will only be visiting the one blog post he navigated to in the first place! So there's no opportunity for Google Analytics to calculate a proper page timing! We can easily fix that!</p>
+<p>Ah, see here's the problem! On a blog, like in our scenario, a visitor will only be visiting the one blog post he navigated to in the first place. So there's no opportunity for Google Analytics to calculate a proper page timing! We can easily fix that.</p>
 <p>Because Google Analytics will also consider events as pageviews when it comes to calculating the session duration. All we need to do is send off an event at the appropriate time... but when is the appropriate time?</p>
 <p>This is a tough question and it's very hard to answer, so let's send one every ten seconds, just to make sure. Here's the adjusted Google Analytics snippet:</p>
 <aside>The grayed-out parts of the code, are the default Google Analytics provides for you.</aside>
@@ -33,14 +33,14 @@ setTimeout((function(timing) {
 <p>Now what does that give us? Let's see:</p>
 <img src="/public/img/high-page-time-1.jpg">
 <p>Ah, that's what I like to see! We've got a 3,331.25% <em>increase</em> in the average session duration and the bounce rate <em>dropped</em> by 91.54%. So this solution seems to work, or does it? Because I think 26 mins is a bit too long for reading my relatively short blog posts.</p>
-<p>Maybe we can find an explanation by adjusting our sittuation: Now, the visitor visits your page from a link aggregator and if I think about the way I use link aggregators, I'll exit them with 20 new tabs open.</p>
+<p>Maybe we can find an explanation by adjusting our situation: Now, the visitor visits your page from a link aggregator and if I think about the way I use link aggregators, I'll exit them with 20 new tabs open.</p>
 <p>See, there might be the cause! The visitor opens your blog post, but he may not actually view it until he's finished dealing with the other 19 tabs. This wasn't a problem when Google Analytics had to figure the average time out by itself, because most recorded timings were zero.</p>
 <p>But now this has changed! Once a user opens the tab with your page loaded in it, we're telling Google Analytics that the visitor is on your site! So that's the next problem to fix!</p>
 
 <h2>2nd attempt</h2>
 
 <p>As I said, we need to find out, when the user actually starts viewing your blog post. But how are we going to do that? Well, this is the ideal situation to show off the relatively new <a href="http://www.w3.org/TR/page-visibility/">Page Visibility API</a>. It can tell us if the browser's frontmost tab contains our site, or not.</p>
-<p>This should deliver a more acurate mesure of when the page is actually viewed and read. But we can't just wait until a user views our page, i.e. the visibility event fires, because the user might just swift briefly over the tab, when navigating between them, for example.</p>
+<p>This should deliver a more accurate measure of when the page is actually viewed and read. But we can't just wait until a user views our page, i.e. the visibility event fires, because the user might just flit briefly over the tab, when navigating between them, for example.</p>
 <pre><code><span class="grayout">ga('create', 'UA-XXXXXXXX-X', 'example.com');</span>
 track_ga();
 
@@ -94,5 +94,5 @@ function event_poller(timing, wait) {
 
 <h2>Final thoughts</h2>
 
-<p>Although our second attempt didn't yield the expected results, I can still confidently say, that the second snippet is better than the first. For one, it saves resources (network), due to the fact that we only start sending events once the user is actually active on your site, which is especially important if you've got a lot of mobile vistors reading your blog. And the page timings are definately more acurate than with the default page timing mechanism. But with the second snippet we also get insight into when our pages are just prerendered.</p>
+<p>Although our second attempt didn't yield the expected results, I can still confidently say, that the second snippet is better than the first. For one, it saves resources (network), due to the fact that we only start sending events once the user is actually active on your site, which is especially important if you've got a lot of mobile vistors reading your blog. And the page timings are definitely more accurate than with the default page timing mechanism. But with the second snippet we also get insight into when our pages are just prerendered.</p>
 <p>So as you see, there doesn't seem to be a perfect solution, yet.</p>
