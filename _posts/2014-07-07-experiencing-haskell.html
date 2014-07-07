@@ -10,7 +10,7 @@ abstract: Looking into the functional world with Haskell.
 
 <p>This is one of the things Haskell is exceptionally good at: types! It has a very strong static type system which is based on Hindley-Milner type inference, that allows the compiler to infer most if not all of the types at compile time. So only in edge cases, or for optimization purposes is the programmer forced to give type annotations. Another great feature of Haskell's type system is its support for type variables. It's Haskell's equivalent of C++ templates, and a feature Go is still missing. They allow for expressive type signatures and contraint based generic typing, i.e.</p>
 
-<pre><code>(sort) :: Ord a => [a] -> [a]</code></pre>
+<pre><code>sort :: Ord a => [a] -> [a]</code></pre>
 
 <p>This says that there's a function, called <code>sort</code>, that takes a list with values of any type, <em>contrained by the typeclass <code>Ord</code></em>, and then returns a value of the same type. Here the <code>Ord</code> typeclass signifies that the values in the list have to be orderable. Now the <code>a</code> could have also been any other string. But the point is, that just from the type signature it's immediately obvious what transformation the function applies to its arguments.</p>
 
