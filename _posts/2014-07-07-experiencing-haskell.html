@@ -1,0 +1,51 @@
+---
+layout: post
+title: Experiencing Haskell
+abstract:
+---
+
+<p>There seems to be a growing interest in (purely) functional languages these days. I've looked at lots of different languages in the past (such as Go, Python, Ruby and others) but never a purely functional one. So recently I decided to dig into Haskell, with a view to discovering some of the fundamental differences. I wanted to share some of my findings with you in this post.</p>
+
+<h2>The Type System</h2>
+
+<p>This is one of the things Haskell is exceptionally good at: types! It has a very strong static type system which is based on Hindley-Milner type inference, that allows the compiler to infer most if not all of the types at compile time. So only in edge cases, or for optimization purposed is the programmer forced to give type annotations. Another great feature of Haskell's type system is its support for type variables. It's Haskell's equivalent of C++ templates, and a feature Go is still missing. They allow for expressive type signatures and contraint based generic typing, i.e.</p>
+
+<pre><code>(sort) :: Ord a => [a] -> [a]</code></pre>
+
+<p>This says, there's a function, called <code>sort</code>, that takes a list with values of any type, <em>contrainted by the typeclass <code>Ord</code></em>, and then returns a value of the same type. Here the <code>Ord</code> typeclass signifies that the values in the list have to be orderable. Now the <code>a</code> could have also been any other string. But the point is, that just from the type signature it's immediately obvious what transformation the function applies to its arguments.</p>
+
+<p>Because of this expressiveness, there's a seperate <a href="http://www.haskell.org/hoogle/">search engine</a> that will search for functions with a given type signature (regardless of the variables used).</p>
+
+<h2>Algebraic Data Types</h2>
+
+<p>Another one of Haskell's interesting properties is its support for algebraic data types (ADTs). Think of an ADT as a type-safe version of a union in C. They let you describe data structures in terms of the possible values a variable of this type can have.</p>
+
+<pre><code>data Tree a = Empty
+          | Leaf a
+          | Node (Tree a) (Tree a)</code></pre>
+
+<p>In this example we describe what a variable of type <code>Tree</code> can be. A Tree is either Empty, or it's a Leaf, or it's a Node (where each node again, contains a tree itself). But that wasn't all, the <em><code>a</code></em> is a type variable for the ADT <code>Tree</code>, so this is the implementation of a <b>generic</b> tree-structure.</p>
+
+<p>These ADTs combined with Haskell's powerful pattern matching, allows for articulate function definitions. For example, the following function takes another function and returns a new tree with the same structure as the original one, but with all the values replaced with the output of the function, when passed the original value:</p>
+
+<aside>In a <em>real</em> implementation you would consider the tree to be a functor, implement the <code>Functor</code> typeclass and use <code>fmap</code> instead, but that's a subject for another post.</aside>
+
+<pre><code>mapTree :: (a -> b) -> Tree a -> Tree b
+mapTree _ Empty = Empty
+mapTree f (Leaf x) = Leaf (f x)
+mapTree f (Node l r) = Node (mapTree f l) (mapTree f r)</code></pre>
+
+<p>As you see, we define the function in terms of the "shape" of its arguments. Mapping an empty tree, <em>is</em> an empty tree, mapping a Leaf, is also a Leaf, but with the function applied, etc.</p>
+
+<p>Though, be careful! Algebraic Data Types are not the solution to all problems. Sometimes they make implementing even the simplest data structures, like a doubly linked-list, near impossible.</p>
+
+<h2>Code Length &amp; Execution Time</h2>
+<p>I was quite surprised about this, but from what I've found my Haskell programs are about the same length or even longer as equivalent versions in Python and I take a lot longer to write them, though that is probably due to my inexperience with Haskell's style of programming. But this chart from the <a href="http://benchmarksgame.alioth.debian.org/u32q/benchmark.php?test=all&lang=ghc&lang2=python3&data=u32q">Computer Language Benchmarks Game</a> shows that I'm not alone:</p>
+
+<img src="http://benchmarksgame.alioth.debian.org/u32q/chartvs.php?r=eNodjskRAEEIAlNCFI8ozD%2BbHfdlYUGDT7dzo5KmjRlYrdMgW6ws4U9bkTyNCT4byu%2B0PN8zmqF1n6T%2FJrD6dNgfIo4mKGd%2B6LPb6wL8KpFTK8E6Njx0c4iKPnLlI9kEdEkXZR%2FUACdY&m=eNozMFHwKs1RMDIwNFEoNTYqVMgDACljBJA%3D&w=eNpLz0j2L6gsycjPMwYAGqEEVw%3D%3D">
+
+<p>Regarding execution time, my results don't match up with the above image. I found (when running a test with a simple log processing script) that the <a href="https://gist.github.com/jcla1/addb4ab8a20aef2fb862#file-activitylog-hs">Haskell version</a> performs significantly slower (>200x slower) than the <a href="https://github.com/jcla1/quantified_self/blob/e8b7e64931161c116b2e37400e3b0d866acfa9da/collectors/activity.py">Python version</a>. From what I've heard though, Haskell's built-in list, which is used extensively in the example, is notoriously slow. I should've instead used a faster list data structure like: <a href="http://www.haskell.org/ghc/docs/latest/html/libraries/containers-0.5.5.1/Data-Sequence.html#t:Seq">Data.Sequence.Seq</a>.</p>
+
+<h2>Wrapping Up</h2>
+
+<p>So you can see, Haskell has quite a few interesting features, that when using them, it feels like you're learning to program for the first time again. Nevertheless you should absolutely try it out and have your mind bended!</p>
