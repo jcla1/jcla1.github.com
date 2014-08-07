@@ -1,0 +1,25 @@
+---
+layout: post
+title: The Baby Emulator
+abstract: Introducing a new Baby emulator written in Go.
+---
+
+<p>The <a href="http://en.wikipedia.org/wiki/Manchester_Small-Scale_Experimental_Machine">Manchester Small-Scale Experimental Machine (SSEM)</a> aka: "the Baby" lay the foundations for all modern computing, being the first stored-program computer, and built to demonstrate the viability of the <a href="http://en.wikipedia.org/wiki/Williams_tube">Williams-Kilburn</a> tube.</p>
+<p>Despite being a breakthrough computer during its lifetime, it had a very limited instruction set and store. Presenting only 32 words of memory (that's 1024 bits) to store both <em>program & data</em> and only 7 instructions to program in, it was still Turing complete and ran its <a href="https://github.com/jcla1/gobaby/blob/b840eae8016ea30b0c98398d9c243015b163c22f/examples/factor.asm">first program</a> on June 21, 1948.</p>
+<p>Seeing it as a valuable history lesson (and because the <a href="http://www.davidsharp.com/baby/applet.html">other emulator</a>, a Java applet, is very cumbersome to use), I decided to write a nice (and fast) emulator that can be used from the command line. And <a href="https://github.com/jcla1/gobaby">here</a> it is:</p>
+
+<pre><code># It's on Github, of course: <a href="https://github.com/jcla1/gobaby">https://github.com/jcla1/gobaby</a>
+$ gobaby -t -l 27 -p=f examples/factor.asm
+Execution took: 14.160445ms
+Value at location #27: 131072</code></pre>
+
+<p>This trivial program (finding the largest factor of 2^18, by going through each number down, starting with 2^18-1) was the first to be run on the Baby and it took ~52 minutes to get the answer back then.</p>
+<p>The emulator also supports printing out the memory contents as their equivalent assembly mnemonics (which is the default behaviour after execution), which makes it particularly useful when having to keep re-running programs, like this <a href="https://github.com/jcla1/gobaby/blob/b840eae8016ea30b0c98398d9c243015b163c22f/examples/primegen.asm">sucessive prime generator</a>:</p>
+
+<pre><code>$ gobaby examples/primegen.asm | gobaby | gobaby -l 21 -p=f
+Value at location #21: 5</code></pre>
+
+<p>Running this will give you the 3rd prime, and for all the ones following that, you've just got to keep on adding successive calls to <code>gobaby</code>.</p>
+<p>So that's all there is to say about the emulator, to find out more about the Baby you should read David Sharp's <a href="www.davidsharp.com/baby/NeilCroft-TechnicalIntroductionToProgrammingTheBabyv4.0.pdf">Technical Introduction To Programming The Baby</a> and of course its <a href="http://en.wikipedia.org/wiki/Manchester_Small-Scale_Experimental_Machine">Wikipedia article</a>.
+
+<p>Share and enjoy!</p>
