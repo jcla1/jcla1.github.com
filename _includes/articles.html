@@ -1,8 +1,9 @@
+<h2><a name="posts" href="#posts">#</a>Blog Posts</h2>
 <div itemscope itemtype="http://schema.org/Blog">
 {% for post in site.posts limit: page.article_limit %}
-<p class="entity" itemprop="blogPost">
-    <span class="info" itemprop="datePublished"><i>{{ post.date | date: '%B %d, %Y' }}</i></span><a href="{{ post.url }}" itemprop="url"><span itemprop="name">{{ post.title }}</span></a><br>
-    <span itemprop="description">{{ post.abstract }}</span>
-</p>
+    <p class="entity" itemprop="blogPost">
+        <span class="info" itemprop="datePublished"><i>{{ post.date | date: '%B %d, %Y' }}</i></span><a href="{{ post.url }}" itemprop="url"><span itemprop="name">{{ post.title }}</span></a><br>
+        <span itemprop="description">{{ post.abstract }}</span>
+    </p>
 {% endfor %}
 </div>

@@ -1,0 +1,8 @@
+<header>
+    {% if page.date %}
+    <aside>{{page.date | date: '%B %d, %Y'}}</aside>
+    {% else %}
+    <aside><script>(function(){var a=Array('January','February','March','April','May','June','July','August','September','October','November','December'),b=new Date,c=(b.getDate()+1E2).toString().slice(-2),d=b.getMonth(),e=b.getFullYear();document.write(a[d]+' '+c+', '+e)})();</script></aside>
+    {% endif %}
+    <a href='/' rel='author'>{{ site.title }}</a>
+</header>
