@@ -1,0 +1,38 @@
+---
+---
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="main.css">
+<title>Personal Annual Report 2014</title>
+</head>
+<body>
+<div id="container">
+<h1>Personal Annual Report 2014</h1>
+<ul class="cards" id="cards"></ul>
+
+<ul class="cards big">
+  <li id="tab_distr">
+    <h2>Distribution of the # open tabs</h2>
+  </li>
+  <li id="search_distr">
+    <h2>Distribution of Google searches</h2>
+  </li>
+  <li id="computer_probability" style="width:750px">
+    <h2>Probability of being at computer</h2>
+  </li>
+</ul>
+
+<h2>Network Usage 2014</h2>
+<div id="netusage"></div>
+
+<h2>Computer Activity</h2>
+<div id="computer_activity_programs"></div>
+<div id="activity"></div>
+
+</div>
+</body>
+
+{% include analytics.html %}
+
+<script src="/public/js/d3.v3.min.js?20130214"></script>
+<script src="all.js"></script>
